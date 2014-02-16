@@ -29,7 +29,7 @@ function getPages(urlToSitemap, callback){
   })
 }
 
-function writeReport(reportdata, filename) {
+function writeReport(reportdata, fileName) {
   json2csv({data: reportdata[0], fields: reportdata[1]}, function(err, csv) {
     if (err) console.log(err);
     fs.writeFile(fileName, csv, function(err) {
@@ -39,7 +39,7 @@ function writeReport(reportdata, filename) {
   });
 }
 
-function mkReportFreshness(pages, filename){
+function mkReportFreshness(pages){
   var
     today = new Date(),
     pagesLength = pages.length,
