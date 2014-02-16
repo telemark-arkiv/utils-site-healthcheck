@@ -4,29 +4,10 @@
 
 var
   helpers = require('./helpers'),
-  request = require('request'),
-  xml2js = require('xml2js'),
-  parser = new xml2js.Parser(),
   argv = require('minimist')(process.argv.slice(2)),
   sitemapUrl = argv.url,
   report = argv.report,
   fileName = argv.filename || 'report.csv';
-
-function getPages(urlToSitemap, callback){
-  request(urlToSitemap, function(error, response, body){
-    if (error) {
-      return callback(error, null);
-    }
-    if (!error && response.statusCode == 200) {
-      parser.parseString(body.toString(), function (err, result) {
-        if (err) {
-          return callback(err, null);
-        }
-        return callback(null, result.urlset.url);
-      });
-    }
-  })
-}
 
 if (sitemapUrl && report && fileName) {
   getPages(sitemapUrl, function(err, pages){
