@@ -1,0 +1,15 @@
+{
+  "name": "utils-site-healthcheck",
+  "private": true,
+  "version": "0.0.1",
+  "author": {
+    "name": "Geir Gåsodden",
+    "email": "geir.gasodden@pythonia.no"
+  },
+  "dependencies": {
+    "request": "~2.33.0",
+    "xml2js": "~0.4.1",
+    "json2csv": "~2.2.1",
+    "minimist": "0.0.7"
+  }
+}
