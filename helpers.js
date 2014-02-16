@@ -58,6 +58,9 @@ module.exports = {
 
     return [report, ['location', 'last_modified']];
 
+  },
+  mkReportLinks: function(pages){
+    console.log('Not yet implemented');
   }
 
 };

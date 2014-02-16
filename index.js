@@ -10,7 +10,7 @@ var
   fileName = argv.filename || 'report.csv';
 
 if (sitemapUrl && report && fileName) {
-  getPages(sitemapUrl, function(err, pages){
+  helpers.getPages(sitemapUrl, function(err, pages){
     if (err) {
       console.log(err);
     } else {
@@ -21,6 +21,8 @@ if (sitemapUrl && report && fileName) {
       if(report == 'fresh'){
         reportData = helpers.mkReportFreshness(pages);
         validReport = true;
+      } else if(report == 'links'){
+        reportData = helpers.mkReportLinks(pages);
       }
 
       if (validReport === true){
