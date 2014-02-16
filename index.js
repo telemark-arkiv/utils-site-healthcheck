@@ -60,7 +60,7 @@ function mkReportFreshness(pages, filename){
     report.push(rep)
   }
 
-  return [rep, ['location', 'last_modified']];
+  return [report, ['location', 'last_modified']];
 
 }
 
