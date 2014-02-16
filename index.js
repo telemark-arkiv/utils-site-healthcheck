@@ -29,6 +29,16 @@ function getPages(urlToSitemap, callback){
   })
 }
 
+function writeReport(reportdata, filename) {
+  json2csv({data: reportdata[0], fields: reportdata[1]}, function(err, csv) {
+    if (err) console.log(err);
+    fs.writeFile(fileName, csv, function(err) {
+      if (err) throw err;
+      console.log('file saved');
+    });
+  });
+}
+
 function mkReportFreshness(pages, filename){
   var
     today = new Date(),
@@ -50,13 +60,7 @@ function mkReportFreshness(pages, filename){
     report.push(rep)
   }
 
-  json2csv({data: report, fields: ['location', 'last_modified']}, function(err, csv) {
-    if (err) console.log(err);
-    fs.writeFile(fileName, csv, function(err) {
-      if (err) throw err;
-      console.log('file saved');
-    });
-  });
+  return [rep, ['location', 'last_modified']];
 
 }
 
@@ -65,7 +69,10 @@ if (sitemapUrl && report && fileName) {
     if (err) {
       console.log(err);
     } else {
-      mkReportFreshness(pages, fileName)
+      var
+        reportdata = mkReportFreshness(pages);
+
+      writeReport(reportdata, fileName);
     }
   })
 } else {
