@@ -3,8 +3,7 @@
  */
 
 var
-  fs = require('fs'),
-  json2csv = require('json2csv'),
+  helpers = require('./helpers'),
   request = require('request'),
   xml2js = require('xml2js'),
   parser = new xml2js.Parser(),
@@ -27,16 +26,6 @@ function getPages(urlToSitemap, callback){
       });
     }
   })
-}
-
-function writeReport(reportdata, fileName) {
-  json2csv({data: reportdata[0], fields: reportdata[1]}, function(err, csv) {
-    if (err) console.log(err);
-    fs.writeFile(fileName, csv, function(err) {
-      if (err) throw err;
-      console.log('file saved');
-    });
-  });
 }
 
 function mkReportFreshness(pages){
@@ -72,7 +61,7 @@ if (sitemapUrl && report && fileName) {
       var
         reportdata = mkReportFreshness(pages);
 
-      writeReport(reportdata, fileName);
+      helpers.writeReport(reportdata, fileName);
     }
   })
 } else {
