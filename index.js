@@ -28,40 +28,26 @@ function getPages(urlToSitemap, callback){
   })
 }
 
-function mkReportFreshness(pages){
-  var
-    today = new Date(),
-    pagesLength = pages.length,
-    report = [];
-
-  function daysBetween(date1, date2){
-    return Math.floor((date1 - date2)/(1000 * 60 * 60 * 24));
-  }
-
-  for(var i=0;i < pagesLength; i++){
-    var
-      rep = {},
-      page = pages[i],
-      pageModified = new Date(page.lastmod[0]);
-
-    rep.location = page.loc[0];
-    rep.last_modified = daysBetween(today, pageModified);
-    report.push(rep)
-  }
-
-  return [report, ['location', 'last_modified']];
-
-}
-
 if (sitemapUrl && report && fileName) {
   getPages(sitemapUrl, function(err, pages){
     if (err) {
       console.log(err);
     } else {
       var
-        reportdata = mkReportFreshness(pages);
+        validReport = false,
+        reportData;
 
-      helpers.writeReport(reportdata, fileName);
+      if(report == 'fresh'){
+        reportData = helpers.mkReportFreshness(pages);
+        validReport = true;
+      }
+
+      if (validReport === true){
+        helpers.writeReport(reportData, fileName);
+      } else {
+        console.log('No valid inputs for --report found. Please try again.')
+      }
+
     }
   })
 } else {

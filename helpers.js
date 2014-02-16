@@ -16,6 +16,30 @@ module.exports = {
         console.log('file saved');
       });
     });
+  },
+  mkReportFreshness: function(pages){
+    var
+      today = new Date(),
+      pagesLength = pages.length,
+      report = [];
+
+    function daysBetween(date1, date2){
+      return Math.floor((date1 - date2)/(1000 * 60 * 60 * 24));
+    }
+
+    for(var i=0;i < pagesLength; i++){
+      var
+        rep = {},
+        page = pages[i],
+        pageModified = new Date(page.lastmod[0]);
+
+      rep.location = page.loc[0];
+      rep.last_modified = daysBetween(today, pageModified);
+      report.push(rep)
+    }
+
+    return [report, ['location', 'last_modified']];
+
   }
-  
+
 };
