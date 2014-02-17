@@ -23,6 +23,8 @@ if (sitemapUrl && report && fileName) {
         validReport = true;
       } else if(report == 'links'){
         reportData = helpers.mkReportLinks(pages);
+      } else if(report == 'health'){
+        reportData = helpers.mkReportHealth(pages);
       }
 
       if (validReport === true){

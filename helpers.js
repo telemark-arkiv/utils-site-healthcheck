@@ -61,6 +61,9 @@ module.exports = {
   },
   mkReportLinks: function(pages){
     console.log('Not yet implemented');
+  },
+  mkReportHealth: function(pages){
+    console.log('Not yet implemented');
   }
 
 };
