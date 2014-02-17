@@ -3,11 +3,12 @@
  */
 
 var
+  csv = require('ya-csv'),
   fs = require('fs'),
-  json2csv = require('json2csv'),
   request = require('request'),
   xml2js = require('xml2js'),
-  parser = new xml2js.Parser();
+  parser = new xml2js.Parser(),
+  stream = require('stream');
 
 module.exports = {
 
@@ -26,20 +27,20 @@ module.exports = {
       }
     })
   },
-  writeReport: function(reportdata, fileName) {
-    json2csv({data: reportdata[0], fields: reportdata[1]}, function(err, csv) {
-      if (err) console.log(err);
-      fs.writeFile(fileName, csv, function(err) {
-        if (err) throw err;
-        console.log('file saved');
-      });
-    });
-  },
-  mkReportFreshness: function(pages){
+  mkReportFreshness: function(pages, filename){
     var
       today = new Date(),
       pagesLength = pages.length,
-      report = [];
+      headers = ['location', 'last_modified'];
+      writeStream = fs.createWriteStream(filename)
+      reader = stream.PassThrough(),
+      writer = csv.createCsvStreamWriter(writeStream);
+
+    reader.on('data', function(data){
+      writer.writeRecord(JSON.parse(data.toString()));
+    });
+
+    reader.push(JSON.stringify(headers));
 
     function daysBetween(date1, date2){
       return Math.floor((date1 - date2)/(1000 * 60 * 60 * 24));
@@ -47,16 +48,14 @@ module.exports = {
 
     for(var i=0;i < pagesLength; i++){
       var
-        rep = {},
         page = pages[i],
-        pageModified = new Date(page.lastmod[0]);
+        pageModified = new Date(page.lastmod[0]),
+        location = page.loc[0],
+        last_modified = daysBetween(today, pageModified),
+        data = [location, last_modified];
 
-      rep.location = page.loc[0];
-      rep.last_modified = daysBetween(today, pageModified);
-      report.push(rep)
+      reader.push(JSON.stringify(data));
     }
-
-    return [report, ['location', 'last_modified']];
 
   },
   mkReportLinks: function(pages){

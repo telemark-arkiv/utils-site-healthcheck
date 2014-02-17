@@ -15,11 +15,10 @@ if (sitemapUrl && report && fileName) {
       console.log(err);
     } else {
       var
-        validReport = false,
-        reportData;
+        validReport = false;
 
       if(report == 'fresh'){
-        reportData = helpers.mkReportFreshness(pages);
+        reportData = helpers.mkReportFreshness(pages, fileName);
         validReport = true;
       } else if(report == 'links'){
         reportData = helpers.mkReportLinks(pages);
@@ -28,7 +27,7 @@ if (sitemapUrl && report && fileName) {
       }
 
       if (validReport === true){
-        helpers.writeReport(reportData, fileName);
+        console.log('Generates report');
       } else {
         console.log('No valid inputs for --report found. Please try again.')
       }
