@@ -3,12 +3,9 @@
  */
 
 var
-  csv = require('ya-csv'),
-  fs = require('fs'),
   request = require('request'),
   xml2js = require('xml2js'),
-  parser = new xml2js.Parser(),
-  stream = require('stream');
+  parser = new xml2js.Parser();
 
 module.exports = {
 
@@ -27,20 +24,13 @@ module.exports = {
       }
     })
   },
-  mkReportFreshness: function(pages, filename){
+  mkReportFreshness: function(pages, stream){
     var
       today = new Date(),
       pagesLength = pages.length,
       headers = ['location', 'last_modified'];
-      writeStream = fs.createWriteStream(filename)
-      reader = stream.PassThrough(),
-      writer = csv.createCsvStreamWriter(writeStream);
 
-    reader.on('data', function(data){
-      writer.writeRecord(JSON.parse(data.toString()));
-    });
-
-    reader.push(JSON.stringify(headers));
+    stream.push(JSON.stringify(headers));
 
     function daysBetween(date1, date2){
       return Math.floor((date1 - date2)/(1000 * 60 * 60 * 24));
@@ -54,7 +44,7 @@ module.exports = {
         last_modified = daysBetween(today, pageModified),
         data = [location, last_modified];
 
-      reader.push(JSON.stringify(data));
+      stream.push(JSON.stringify(data));
     }
 
   },
