@@ -47,3 +47,9 @@ Collection of reports
 --report = fresh
 
 Generates a report with location of page and the number of days since it's last update
+
+###Health###
+
+--report = health
+
+Generates a report with location of page and it's status code (200 is good)
