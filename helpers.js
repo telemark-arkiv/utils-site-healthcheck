@@ -49,10 +49,10 @@ module.exports = {
 
   },
   mkReportLinks: function(pages){
-    console.log('Not yet implemented');
+    console.log('Report type "links". Not yet implemented');
   },
   mkReportHealth: function(pages){
-    console.log('Not yet implemented');
+    console.log('Report type "health". Not yet implemented');
   }
 
 };

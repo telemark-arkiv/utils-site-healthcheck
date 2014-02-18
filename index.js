@@ -10,16 +10,21 @@ var
   argv = require('minimist')(process.argv.slice(2)),
   sitemapUrl = argv.url,
   report = argv.report,
-  fileName = argv.filename || 'report.csv';
+  fileName = argv.filename || 'report.csv',
+  reports = ['fresh', 'health', 'links'],
+  validReport = false;
 
-if (sitemapUrl && report && fileName) {
+if(reports.indexOf(report) > -1) {
+  validReport = true;
+}
+
+if (sitemapUrl && report && fileName && validReport) {
   helpers.getPages(sitemapUrl, function(err, pages){
     if (err) {
       console.log(err);
     } else {
       var
-        validReport = false;
-        writeStream = fs.createWriteStream(filename),
+        writeStream = fs.createWriteStream(fileName),
         reader = stream.PassThrough(),
         writer = csv.createCsvStreamWriter(writeStream);
 
@@ -28,24 +33,19 @@ if (sitemapUrl && report && fileName) {
       });
 
       if(report == 'fresh'){
+        console.log('Generates report type "fresh"')
         reportData = helpers.mkReportFreshness(pages, reader);
-        validReport = true;
       } else if(report == 'links'){
         reportData = helpers.mkReportLinks(pages);
       } else if(report == 'health'){
         reportData = helpers.mkReportHealth(pages);
       }
 
-      if (validReport === true){
-        console.log('Generates report');
-      } else {
-        console.log('No valid inputs for --report found. Please try again.')
-      }
-
     }
   })
 } else {
-  console.log('Missing required arguments');
+  console.log('Missing required arguments or invalid report type');
   console.log('Usage:');
   console.log('node index.js --url=url-to-parse --report=type-of-report --filename=filename-to-save');
+  console.log('Valid report types: fresh, health and links');
 }
