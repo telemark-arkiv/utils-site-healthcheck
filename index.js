@@ -38,7 +38,8 @@ if (sitemapUrl && report && fileName && validReport) {
       } else if(report == 'links'){
         reportData = helpers.mkReportLinks(pages);
       } else if(report == 'health'){
-        reportData = helpers.mkReportHealth(pages);
+        console.log('Generates report type "health"')
+        reportData = helpers.mkReportHealth(pages, reader);
       }
 
     }

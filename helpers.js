@@ -51,8 +51,31 @@ module.exports = {
   mkReportLinks: function(pages){
     console.log('Report type "links". Not yet implemented');
   },
-  mkReportHealth: function(pages){
-    console.log('Report type "health". Not yet implemented');
+  mkReportHealth: function(pages, stream){
+    var
+      pagesLength = pages.length,
+      headers = ['location', 'status_code'];
+
+    stream.push(JSON.stringify(headers));
+
+    for(var i=0;i < pagesLength; i++){
+      var
+        page = pages[i],
+        location = page.loc[0];
+
+      request(location, function(error, response, body){
+        if (error) {
+          console.log(error);
+        } else {
+          var
+            thisUrl = response.request.uri.href,
+            data = [thisUrl, response.statusCode];
+          stream.push(JSON.stringify(data));
+        }
+
+      })
+
+    }
   }
 
 };
