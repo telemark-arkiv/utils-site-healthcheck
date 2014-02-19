@@ -11,7 +11,7 @@ var
   sitemapUrl = argv.url,
   report = argv.report,
   fileName = argv.filename || 'report.csv',
-  reports = ['fresh', 'health', 'links'],
+  reports = ['fresh', 'health', 'deadlinks'],
   validReport = false;
 
 if(reports.indexOf(report) > -1) {
@@ -35,8 +35,9 @@ if (sitemapUrl && report && fileName && validReport) {
       if(report == 'fresh'){
         console.log('Generates report type "fresh"')
         reportData = helpers.mkReportFreshness(pages, reader);
-      } else if(report == 'links'){
-        reportData = helpers.mkReportLinks(pages);
+      } else if(report == 'deadlinks'){
+        console.log('Generates report type "deadlinks"')
+        reportData = helpers.mkReportDeadlinks(pages, reader);
       } else if(report == 'health'){
         console.log('Generates report type "health"')
         reportData = helpers.mkReportHealth(pages, reader);

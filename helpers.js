@@ -4,8 +4,60 @@
 
 var
   request = require('request'),
+  cheerio = require('cheerio'),
   xml2js = require('xml2js'),
   parser = new xml2js.Parser();
+
+function checkLink(pageUrl, linkUrl, callback){
+  request(linkUrl, function(error, response, body){
+    if (error) {
+      callback(error, null);
+    }
+    if (!error && response.statusCode != 200) {
+      return callback (null, [pageUrl, linkUrl, response.statusCode]);
+    }
+  });
+}
+
+function checkPageLinks(pageUrl, stream, links){
+  var
+    linksLength = links.length;
+
+  for(var i=0;i < linksLength; i++){
+    var
+      link = links[i];
+
+    checkLink(pageUrl, link, function(err, data){
+      if(err){
+        console.log(err);
+      } else {
+        stream.push(JSON.stringify(data));
+      }
+    });
+  }
+}
+
+function getPageLinks(url, callback) {
+  request(url, function(error, response, body){
+    if (error) {
+      callback(error, null, null);
+    }
+    if (!error && response.statusCode == 200) {
+      var
+        $ = cheerio.load(body.toString()),
+        allAs = $('a'),
+        links = [];
+
+      allAs.each(function(i, elem){
+        if(elem.attribs.href && elem.attribs.href.indexOf('http') > -1) {
+          links.push(elem.attribs.href);
+        }
+      })
+
+      callback(null, url, links);
+    }
+  });
+}
 
 module.exports = {
 
@@ -48,8 +100,27 @@ module.exports = {
     }
 
   },
-  mkReportLinks: function(pages){
-    console.log('Report type "links". Not yet implemented');
+  mkReportDeadlinks: function(pages, stream){
+    var
+      pagesLength = pages.length,
+      headers = ['location', 'link', 'status_code'];
+
+    stream.push(JSON.stringify(headers));
+
+    for(var i=0;i < pagesLength; i++){
+      var
+        page = pages[i],
+        location = page.loc[0];
+
+      getPageLinks(location, function(err, pageUrl, links){
+        if(err){
+          console.log(err);
+        } else {
+          checkPageLinks(pageUrl, stream, links);
+        }
+      });
+
+    }
   },
   mkReportHealth: function(pages, stream){
     var
