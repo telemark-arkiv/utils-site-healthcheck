@@ -8,7 +8,7 @@ var
   xml2js = require('xml2js'),
   parser = new xml2js.Parser(),
   w3c = require('w3c-validate').createValidator(),
-  acheckerID = 'insert-your-webservice-id-here';
+  acheckerID = 'insert-your-webservice-ID-here';
 
 function validateWcag(pageUrl, callback){
   var
@@ -230,11 +230,12 @@ module.exports = {
       validateWcag(location, function(err, data){
         if(err){
           console.log(err);
-        }
-        if (data.result){
-          stream.push(JSON.stringify([data.url, data.result.resultset.summary[0].NumOfErrors[0]]));
         } else {
-          console.log('Something is wrong: ' + data);
+          if (data.result){
+            stream.push(JSON.stringify([data.url, data.result.resultset.summary[0].NumOfErrors[0]]));
+          } else {
+            console.log('Something is wrong: ' + data);
+          }
         }
 
       });

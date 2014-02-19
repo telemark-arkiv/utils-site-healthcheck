@@ -43,32 +43,37 @@ $ node index.js --url=url-to-sitemap --report=name-of-report-type --filename=fil
 Collection of reports
 
 ###Freshness###
-
---report = fresh
+```
+--report=fresh
+```
 
 Generates a report with location of page and the number of days since it's last update
 
 ###Health###
-
---report = health
+```
+--report=health
+```
 
 Generates a report with location of page and it's status code (200 is good)
 
 ###Dead links###
-
---report = deadlinks
+```
+--report=deadlinks
+```
 
 Generates a report with location of page, the url with error and it's status code
 
 ###HTML###
-
---report = html
+```
+--report=html
+```
 
 Checks each page against the w3c-validator. Generates a report with location of page and "Valid" og "Errors"
 
 ###WCAG###
-
---report = wcag
+```
+--report=wcag
+```
 
 In order to use this report you must supply a Web Service ID from achecker. You can register for free at [http://achecker.ca/](http://achecker.ca/)
 
