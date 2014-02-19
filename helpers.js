@@ -6,7 +6,19 @@ var
   request = require('request'),
   cheerio = require('cheerio'),
   xml2js = require('xml2js'),
-  parser = new xml2js.Parser();
+  parser = new xml2js.Parser(),
+  w3c = require('w3c-validate').createValidator();
+
+function validateHtml(pageUrl, data, callback){
+  w3c.validate(data, function(err){
+    if(err){
+      console.log(err);
+      return callback(null, [pageUrl, 'Errors'])
+    } else {
+      return callback(null, [pageUrl, 'Valid'])
+    }
+  })
+}
 
 function checkLink(pageUrl, linkUrl, callback){
   request(linkUrl, function(error, response, body){
@@ -142,6 +154,39 @@ module.exports = {
             thisUrl = response.request.uri.href,
             data = [thisUrl, response.statusCode];
           stream.push(JSON.stringify(data));
+        }
+
+      })
+
+    }
+  },
+  mkReportHtml: function(pages, stream){
+    var
+      pagesLength = pages.length,
+      headers = ['location', 'status'];
+
+    stream.push(JSON.stringify(headers));
+
+    for(var i=0;i < pagesLength; i++){
+      var
+        page = pages[i],
+        location = page.loc[0];
+
+      request(location, function(error, response, body){
+        if (error) {
+          console.log(error);
+        } else {
+          var
+            thisUrl = response.request.uri.href,
+            data = body.toString();
+
+          validateHtml(thisUrl, data, function(err, data){
+            if(err){
+              console.log(err);
+            } else {
+              stream.push(JSON.stringify(data));
+            }
+          });
         }
 
       })
