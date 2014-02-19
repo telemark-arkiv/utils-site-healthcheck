@@ -65,3 +65,11 @@ Generates a report with location of page, the url with error and it's status cod
 --report = html
 
 Checks each page against the w3c-validator. Generates a report with location of page and "Valid" og "Errors"
+
+###WCAG###
+
+--report = wcag
+
+In order to use this report you must supply a Web Service ID from achecker. You can register for free at [http://achecker.ca/](http://achecker.ca/)
+
+The report will return location of page and number of error from validation towards WCAG 2.0 Level AA.

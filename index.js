@@ -11,7 +11,7 @@ var
   sitemapUrl = argv.url,
   report = argv.report,
   fileName = argv.filename || 'report.csv',
-  reports = ['fresh', 'health', 'deadlinks', 'html'],
+  reports = ['fresh', 'health', 'deadlinks', 'html', 'wcag'],
   validReport = false;
 
 if(reports.indexOf(report) > -1) {
@@ -44,6 +44,9 @@ if (sitemapUrl && report && fileName && validReport) {
       } else if(report == 'html'){
         console.log('Generates report type "html"')
         reportData = helpers.mkReportHtml(pages, reader);
+      } else if(report == 'wcag'){
+        console.log('Generates report type "wcag"')
+        reportData = helpers.mkReportWcag(pages, reader);
       }
 
     }
@@ -52,5 +55,5 @@ if (sitemapUrl && report && fileName && validReport) {
   console.log('Missing required arguments or invalid report type');
   console.log('Usage:');
   console.log('node index.js --url=url-to-parse --report=type-of-report --filename=filename-to-save');
-  console.log('Valid report types: fresh, health and links');
+  console.log('Valid report types: fresh, health, links, html and wcag');
 }

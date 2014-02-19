@@ -7,7 +7,29 @@ var
   cheerio = require('cheerio'),
   xml2js = require('xml2js'),
   parser = new xml2js.Parser(),
-  w3c = require('w3c-validate').createValidator();
+  w3c = require('w3c-validate').createValidator(),
+  acheckerID = 'insert-your-webservice-id-here';
+
+function validateWcag(pageUrl, callback){
+  var
+    acheckerUrl = 'http://achecker.ca/checkacc.php?uri=' + pageUrl + '&id=' + acheckerID + '&output=rest';
+
+  request(acheckerUrl, function(error, response, body){
+    if(error){
+      return callback(error, null);
+    } else {
+
+      parser.parseString(body.toString(), function (err, result) {
+        if (err) {
+          return callback(err, null);
+        }
+        return callback(null, {'url': pageUrl, 'result':result});
+      });
+
+    }
+
+  });
+}
 
 function validateHtml(pageUrl, data, callback){
   w3c.validate(data, function(err){
@@ -192,6 +214,33 @@ module.exports = {
       })
 
     }
+  },
+  mkReportWcag: function(pages, stream){
+    var
+      pagesLength = pages.length,
+      headers = ['location', 'errors'];
+
+    stream.push(JSON.stringify(headers));
+
+    for(var i=0;i < pagesLength; i++){
+      var
+        page = pages[i],
+        location = page.loc[0];
+
+      validateWcag(location, function(err, data){
+        if(err){
+          console.log(err);
+        }
+        if (data.result){
+          stream.push(JSON.stringify([data.url, data.result.resultset.summary[0].NumOfErrors[0]]));
+        } else {
+          console.log('Something is wrong: ' + data);
+        }
+
+      });
+
+    }
+
   }
 
 };
