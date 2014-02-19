@@ -53,3 +53,8 @@ Generates a report with location of page and the number of days since it's last 
 --report = health
 
 Generates a report with location of page and it's status code (200 is good)
+
+###Dead links###
+--report = deadlinks
+
+Generates a report with location of page, the url with error and it's status code
