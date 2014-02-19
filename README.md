@@ -55,6 +55,13 @@ Generates a report with location of page and the number of days since it's last 
 Generates a report with location of page and it's status code (200 is good)
 
 ###Dead links###
+
 --report = deadlinks
 
 Generates a report with location of page, the url with error and it's status code
+
+###HTML###
+
+--report = html
+
+Checks each page against the w3c-validator. Generates a report with location of page and "Valid" og "Errors"
