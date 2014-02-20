@@ -58,5 +58,5 @@ if (sitemapUrl && report && fileName && validReport) {
   console.log('Missing required arguments or invalid report type');
   console.log('Usage:');
   console.log('node index.js --url=url-to-parse --report=type-of-report --filename=filename-to-save');
-  console.log('Valid report types: fresh, health, links, html and wcag');
+  console.log('Valid report types: fresh, health, links, html, wcag and pagespeed');
 }
