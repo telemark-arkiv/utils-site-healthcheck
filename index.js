@@ -32,23 +32,19 @@ if (sitemapUrl && report && fileName && validReport) {
         writer.writeRecord(JSON.parse(data.toString()));
       });
 
+      console.log('Generates report type "' + report + '"');
+
       if(report == 'fresh'){
-        console.log('Generates report type "fresh"')
         reportData = helpers.mkReportFreshness(pages, reader);
       } else if(report == 'deadlinks'){
-        console.log('Generates report type "deadlinks"')
         reportData = helpers.mkReportDeadlinks(pages, reader);
       } else if(report == 'health'){
-        console.log('Generates report type "health"')
         reportData = helpers.mkReportHealth(pages, reader);
       } else if(report == 'html'){
-        console.log('Generates report type "html"')
         reportData = helpers.mkReportHtml(pages, reader);
       } else if(report == 'wcag'){
-        console.log('Generates report type "wcag"')
         reportData = helpers.mkReportWcag(pages, reader);
       } else if(report == 'pagespeed'){
-        console.log('Generates report type "pagespeed"')
         reportData = helpers.mkReportPagespeed(pages, reader);
       }
 
