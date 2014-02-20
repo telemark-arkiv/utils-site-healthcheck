@@ -8,7 +8,24 @@ var
   xml2js = require('xml2js'),
   parser = new xml2js.Parser(),
   w3c = require('w3c-validate').createValidator(),
-  acheckerID = 'insert-your-webservice-ID-here';
+  acheckerID = 'insert-your-webservice-ID-here',
+  pagespeedAPIKey = 'insert-your-APIKey-from-Google-here';
+
+function getPagespeedReport(pageUrl, callback){
+  var
+    pagespeedUrl = 'https://www.googleapis.com/pagespeedonline/v1/runPagespeed?url='+ pageUrl + '&key=' + pagespeedAPIKey;
+
+  request(pagespeedUrl, function(error, response, body){
+    if(error){
+      return callback(error, null);
+    } else {
+
+      return callback(null, {'url': pageUrl, 'result': JSON.parse(body.toString())})
+
+    }
+
+  });
+}
 
 function validateWcag(pageUrl, callback){
   var
@@ -242,6 +259,35 @@ module.exports = {
 
     }
 
+  },
+  mkReportPagespeed: function(pages, stream){
+    var
+      pagesLength = pages.length,
+      headers = ['location', 'score'];
+
+    stream.push(JSON.stringify(headers));
+
+    for(var i=0;i < pagesLength; i++){
+      var
+        page = pages[i],
+        location = page.loc[0];
+
+      getPagespeedReport(location, function(err, data){
+        if(err){
+          console.log(err);
+        } else {
+          if (data.result){
+            stream.push(JSON.stringify([data.url, data.result.score]));
+          } else {
+            console.log('Something is wrong: ' + data);
+          }
+        }
+
+      });
+
+    }
+
   }
+
 
 };

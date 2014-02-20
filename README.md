@@ -78,3 +78,11 @@ Checks each page against the w3c-validator. Generates a report with location of 
 In order to use this report you must supply a Web Service ID from achecker. You can register for free at [http://achecker.ca/](http://achecker.ca/)
 
 The report will return location of page and number of error from validation towards WCAG 2.0 Level AA.
+
+###Pagespeed###
+```
+--report=pagespeed
+```
+In order to use this report you must supply a valid APIKey from Google.
+
+The report will return location of page and the pagespeed-score from Google.

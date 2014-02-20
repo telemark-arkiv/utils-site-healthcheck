@@ -11,7 +11,7 @@ var
   sitemapUrl = argv.url,
   report = argv.report,
   fileName = argv.filename || 'report.csv',
-  reports = ['fresh', 'health', 'deadlinks', 'html', 'wcag'],
+  reports = ['fresh', 'health', 'deadlinks', 'html', 'wcag', 'pagespeed'],
   validReport = false;
 
 if(reports.indexOf(report) > -1) {
@@ -47,6 +47,9 @@ if (sitemapUrl && report && fileName && validReport) {
       } else if(report == 'wcag'){
         console.log('Generates report type "wcag"')
         reportData = helpers.mkReportWcag(pages, reader);
+      } else if(report == 'pagespeed'){
+        console.log('Generates report type "pagespeed"')
+        reportData = helpers.mkReportPagespeed(pages, reader);
       }
 
     }
