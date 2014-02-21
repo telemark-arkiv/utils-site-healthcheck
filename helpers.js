@@ -11,6 +11,30 @@ var
   acheckerID = 'insert-your-webservice-ID-here',
   pagespeedAPIKey = 'insert-your-APIKey-from-Google-here';
 
+
+function getMetadata(pageUrl, callback) {
+  request(pageUrl, function(error, response, body){
+    if (error) {
+      callback(error, null);
+    }
+    if (!error && response.statusCode == 200) {
+      var
+        result = {},
+        $ = cheerio.load(body.toString()),
+        title = $('title').text(),
+        keywords = $('meta[name=keywords]').attr('content'),
+        description = $('meta[name=description]').attr('content');
+
+      result.url = pageUrl;
+      result.title = title;
+      result.keywords = keywords;
+      result.description = description;
+
+      callback(null, result);
+    }
+  });
+}
+
 function getPagespeedReport(pageUrl, callback){
   var
     pagespeedUrl = 'https://www.googleapis.com/pagespeedonline/v1/runPagespeed?url='+ pageUrl + '&key=' + pagespeedAPIKey;
@@ -278,6 +302,34 @@ module.exports = {
         } else {
           if (data.result){
             stream.push(JSON.stringify([data.url, data.result.score]));
+          } else {
+            console.log('Something is wrong: ' + data);
+          }
+        }
+
+      });
+
+    }
+
+  },
+  mkReportMeta: function(pages, stream){
+    var
+      pagesLength = pages.length,
+      headers = ['location', 'title', 'keywords', 'description'];
+
+    stream.push(JSON.stringify(headers));
+
+    for(var i=0;i < pagesLength; i++){
+      var
+        page = pages[i],
+        location = page.loc[0];
+
+      getMetadata(location, function(err, data){
+        if(err){
+          console.log(err);
+        } else {
+          if (data.url){
+            stream.push(JSON.stringify([data.url, data.title, data.keywords, data.description]));
           } else {
             console.log('Something is wrong: ' + data);
           }

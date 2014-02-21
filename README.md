@@ -83,6 +83,14 @@ The report will return location of page and number of error from validation towa
 ```
 --report=pagespeed
 ```
+
 In order to use this report you must supply a valid APIKey from Google.
 
 The report will return location of page and the pagespeed-score from Google.
+
+###Metadata###
+```
+--report=meta
+```
+
+Collects title, meta description and meta keywords from every page
