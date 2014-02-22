@@ -44,35 +44,35 @@ Collection of reports
 
 ###Freshness###
 ```
---report=fresh
+--report=Fresh
 ```
 
 Generates a report with location of page and the number of days since it's last update
 
 ###Health###
 ```
---report=health
+--report=Health
 ```
 
 Generates a report with location of page and it's status code (200 is good)
 
 ###Dead links###
 ```
---report=deadlinks
+--report=Deadlinks
 ```
 
 Generates a report with location of page, the url with error and it's status code
 
 ###HTML###
 ```
---report=html
+--report=Html
 ```
 
 Checks each page against the w3c-validator. Generates a report with location of page and "Valid" og "Errors"
 
 ###WCAG###
 ```
---report=wcag
+--report=Wcag
 ```
 
 In order to use this report you must supply a Web Service ID from achecker. You can register for free at [http://achecker.ca/](http://achecker.ca/)
@@ -81,7 +81,7 @@ The report will return location of page and number of error from validation towa
 
 ###Pagespeed###
 ```
---report=pagespeed
+--report=Pagespeed
 ```
 
 In order to use this report you must supply a valid APIKey from Google.
@@ -90,7 +90,7 @@ The report will return location of page and the pagespeed-score from Google.
 
 ###Metadata###
 ```
---report=meta
+--report=Meta
 ```
 
 Collects title, meta description and meta keywords from every page
