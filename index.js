@@ -26,7 +26,8 @@ if (sitemapUrl && report && fileName && validReport) {
       var
         writeStream = fs.createWriteStream(fileName),
         reader = stream.PassThrough(),
-        writer = csv.createCsvStreamWriter(writeStream);
+        writer = csv.createCsvStreamWriter(writeStream),
+        thisReport = helpers['mkReport' + report];
 
       reader.on('data', function(data){
         writer.writeRecord(JSON.parse(data.toString()));
@@ -34,21 +35,7 @@ if (sitemapUrl && report && fileName && validReport) {
 
       console.log('Generates report type "' + report + '"');
 
-      if(report == 'Fresh'){
-        reportData = helpers.mkReportFresh(pages, reader);
-      } else if(report == 'Deadlinks'){
-        reportData = helpers.mkReportDeadlinks(pages, reader);
-      } else if(report == 'Health'){
-        reportData = helpers.mkReportHealth(pages, reader);
-      } else if(report == 'Html'){
-        reportData = helpers.mkReportHtml(pages, reader);
-      } else if(report == 'Wcag'){
-        reportData = helpers.mkReportWcag(pages, reader);
-      } else if(report == 'Pagespeed'){
-        reportData = helpers.mkReportPagespeed(pages, reader);
-      } else if(report == 'Meta'){
-        reportData = helpers.mkReportMeta(pages, reader);
-      }
+      thisReport(pages, reader);
 
     }
   })
