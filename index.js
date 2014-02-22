@@ -11,7 +11,7 @@ var
   sitemapUrl = argv.url,
   report = argv.report,
   fileName = argv.filename || 'report.csv',
-  reports = ['fresh', 'health', 'deadlinks', 'html', 'wcag', 'pagespeed', 'meta'],
+  reports = ['Fresh', 'Health', 'Deadlinks', 'Html', 'Wcag', 'Pagespeed', 'Meta'],
   validReport = false;
 
 if(reports.indexOf(report) > -1) {
@@ -34,19 +34,19 @@ if (sitemapUrl && report && fileName && validReport) {
 
       console.log('Generates report type "' + report + '"');
 
-      if(report == 'fresh'){
-        reportData = helpers.mkReportFreshness(pages, reader);
-      } else if(report == 'deadlinks'){
+      if(report == 'Fresh'){
+        reportData = helpers.mkReportFresh(pages, reader);
+      } else if(report == 'Deadlinks'){
         reportData = helpers.mkReportDeadlinks(pages, reader);
-      } else if(report == 'health'){
+      } else if(report == 'Health'){
         reportData = helpers.mkReportHealth(pages, reader);
-      } else if(report == 'html'){
+      } else if(report == 'Html'){
         reportData = helpers.mkReportHtml(pages, reader);
-      } else if(report == 'wcag'){
+      } else if(report == 'Wcag'){
         reportData = helpers.mkReportWcag(pages, reader);
-      } else if(report == 'pagespeed'){
+      } else if(report == 'Pagespeed'){
         reportData = helpers.mkReportPagespeed(pages, reader);
-      } else if(report == 'meta'){
+      } else if(report == 'Meta'){
         reportData = helpers.mkReportMeta(pages, reader);
       }
 
@@ -56,5 +56,5 @@ if (sitemapUrl && report && fileName && validReport) {
   console.log('Missing required arguments or invalid report type');
   console.log('Usage:');
   console.log('node index.js --url=url-to-parse --report=type-of-report --filename=filename-to-save');
-  console.log('Valid report types: fresh, health, links, html, wcag, pagespeed and meta');
+  console.log('Valid report types: ' + reports.join(', '));
 }

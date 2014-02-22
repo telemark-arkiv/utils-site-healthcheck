@@ -151,7 +151,7 @@ module.exports = {
       }
     })
   },
-  mkReportFreshness: function(pages, stream){
+  mkReportFresh: function(pages, stream){
     var
       today = new Date(),
       pagesLength = pages.length,
