@@ -7,7 +7,6 @@ var
   cheerio = require('cheerio'),
   xml2js = require('xml2js'),
   parser = new xml2js.Parser(),
-  w3cjs = require('w3cjs'),
   acheckerID = 'insert-webservice-ID-for-achecker-here',
   pagespeedAPIKey = 'insert-google-api-key-here';
 
@@ -71,12 +70,15 @@ function validateWcag(pageUrl, callback){
   });
 }
 
-function validateThisUrl(pageUrl, cb){
-   w3cjs.validate({
-    file: pageUrl,
-    output: 'json',
-    callback: function (res) {
-      return cb(res);
+function validateThisUrl(pageUrl, callback){
+  var
+    url = 'http://html5.validator.nu/?doc=' + pageUrl + '&out=json';
+
+  request(url, function(error, response, body){
+    if(error){
+      return callback(error, null);
+    } else {
+      return callback(null, JSON.parse(body.toString()));
     }
   });
 }
@@ -233,11 +235,15 @@ module.exports = {
         page = pages[i],
         location = page.loc[0];
 
-      validateThisUrl(location, function(data){
-        if(data.messages.length > 0){
-          stream.push(JSON.stringify([data.url, "Errors"]));
+      validateThisUrl(location, function(err, data){
+        if(err){
+          console.log(err);
         } else {
-          stream.push(JSON.stringify([data.url, "Valid"]));
+          if(data.messages.length > 0){
+            stream.push(JSON.stringify([data.url, "Errors"]));
+          } else {
+            stream.push(JSON.stringify([data.url, "Valid"]));
+          }
         }
       });
 
