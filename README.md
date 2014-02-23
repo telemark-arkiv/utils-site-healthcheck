@@ -101,22 +101,24 @@ The report returns a row with url for page, title, keywords and description i se
 
 ##Dependencies##
 
-**request**
+These are the modules used in this app.
+
+###request###
 Simplified HTTP request client.
 [NPM](https://www.npmjs.org/package/request) [GitHub](https://github.com/mikeal/request)
 
-**xml2js**
+###xml2js###
 Simple XML to JavaScript object converter.
 [NPM](https://www.npmjs.org/package/xml2js) [GitHub](https://github.com/Leonidas-from-XIV/node-xml2js)
 
-**minimist**
+###minimist###
 parse argument options
 [NPM](https://www.npmjs.org/package/minimist) [GitHub](https://github.com/substack/minimist)
 
-**ya-csv**
+###ya-csv###
 CSV parser and generator for Node.js
 [NPM](https://www.npmjs.org/package/ya-csv) [GitHub](https://github.com/koles/ya-csv)
 
-**cheerio**
+###cheerio###
 Tiny, fast, and elegant implementation of core jQuery designed specifically for the server.
 [NPM](https://www.npmjs.org/package/cheerio) [GitHub](https://github.com/MatthewMueller/cheerio)
