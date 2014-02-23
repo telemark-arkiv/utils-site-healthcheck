@@ -1,7 +1,7 @@
 {
   "name": "utils-site-healthcheck",
   "private": true,
-  "version": "0.0.1",
+  "version": "0.0.2",
   "author": {
     "name": "Geir Gåsodden",
     "email": "geir.gasodden@pythonia.no"
@@ -12,6 +12,6 @@
     "minimist": "0.0.7",
     "ya-csv": "~0.9.3",
     "cheerio": "~0.13.1",
-    "w3c-validate": "0.0.2"
+    "w3cjs": "^0.1.24"
   }
 }

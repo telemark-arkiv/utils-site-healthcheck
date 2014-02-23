@@ -7,10 +7,9 @@ var
   cheerio = require('cheerio'),
   xml2js = require('xml2js'),
   parser = new xml2js.Parser(),
-  w3c = require('w3c-validate').createValidator(),
-  acheckerID = 'insert-your-webservice-ID-here',
-  pagespeedAPIKey = 'insert-your-APIKey-from-Google-here';
-
+  w3cjs = require('w3cjs'),
+  acheckerID = 'insert-webservice-ID-for-achecker-here',
+  pagespeedAPIKey = 'insert-google-api-key-here';
 
 function getMetadata(pageUrl, callback) {
   request(pageUrl, function(error, response, body){
@@ -72,15 +71,14 @@ function validateWcag(pageUrl, callback){
   });
 }
 
-function validateHtml(pageUrl, data, callback){
-  w3c.validate(data, function(err){
-    if(err){
-      console.log(err);
-      return callback(null, [pageUrl, 'Errors'])
-    } else {
-      return callback(null, [pageUrl, 'Valid'])
+function validateThisUrl(pageUrl, cb){
+   w3cjs.validate({
+    file: pageUrl,
+    output: 'json',
+    callback: function (res) {
+      return cb(res);
     }
-  })
+  });
 }
 
 function checkLink(pageUrl, linkUrl, callback){
@@ -235,24 +233,13 @@ module.exports = {
         page = pages[i],
         location = page.loc[0];
 
-      request(location, function(error, response, body){
-        if (error) {
-          console.log(error);
+      validateThisUrl(location, function(data){
+        if(data.messages.length > 0){
+          stream.push(JSON.stringify([data.url, "Errors"]));
         } else {
-          var
-            thisUrl = response.request.uri.href,
-            data = body.toString();
-
-          validateHtml(thisUrl, data, function(err, data){
-            if(err){
-              console.log(err);
-            } else {
-              stream.push(JSON.stringify(data));
-            }
-          });
+          stream.push(JSON.stringify([data.url, "Valid"]));
         }
-
-      })
+      });
 
     }
   },
@@ -340,6 +327,5 @@ module.exports = {
     }
 
   }
-
 
 };
