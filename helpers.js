@@ -10,6 +10,23 @@ var
   acheckerID = 'insert-webservice-ID-for-achecker-here',
   pagespeedAPIKey = 'insert-google-api-key-here';
 
+function checkMyHealth(pageUrl, callback){
+
+  request(pageUrl, function(error, response, body){
+    if (error) {
+      callback(error, null);
+    } else {
+      var
+        thisUrl = response.request.uri.href,
+        data = {url:thisUrl, statusCode:response.statusCode};
+      callback(null, data);
+    }
+
+  })
+
+
+}
+
 function getMetadata(pageUrl, callback) {
   request(pageUrl, function(error, response, body){
     if (error) {
@@ -209,16 +226,12 @@ module.exports = {
         page = pages[i],
         location = page.loc[0];
 
-      request(location, function(error, response, body){
-        if (error) {
-          console.log(error);
+      checkMyHealth(location, function(err, data){
+        if(err){
+          console.log(err);
         } else {
-          var
-            thisUrl = response.request.uri.href,
-            data = [thisUrl, response.statusCode];
-          stream.push(JSON.stringify(data));
+          stream.push(JSON.stringify([data.url, data.statusCode]))
         }
-
       })
 
     }
