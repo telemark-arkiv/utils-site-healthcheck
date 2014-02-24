@@ -22,8 +22,7 @@ function checkMyHealth(pageUrl, callback){
       callback(null, data);
     }
 
-  })
-
+  });
 
 }
 
@@ -191,6 +190,37 @@ module.exports = {
       stream.push(JSON.stringify(data));
     }
 
+  },
+  mkReportLinks: function(pages, stream){
+    var
+      pagesLength = pages.length,
+      headers = ['location', 'link'];
+
+    stream.push(JSON.stringify(headers));
+
+    for(var i=0;i < pagesLength; i++){
+      var
+        page = pages[i],
+        location = page.loc[0];
+
+      getPageLinks(location, function(err, pageUrl, links){
+        if(err){
+          console.log(err);
+        } else {
+
+          var
+            linksLength = links.length;
+
+          for(var i=0;i < linksLength; i++){
+            var
+              link = links[i];
+
+            stream.push(JSON.stringify([pageUrl, link]));
+          }
+        }
+      });
+
+    }
   },
   mkReportDeadlinks: function(pages, stream){
     var

@@ -56,6 +56,13 @@ Generates a report with location of page and the number of days since it's last 
 
 Generates a report with location of page and it's status code.
 
+###Links###
+```
+--report=Links
+```
+
+Generates a report with location of pages and links on that page.
+
 ###Dead links###
 ```
 --report=Deadlinks

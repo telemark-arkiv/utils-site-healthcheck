@@ -11,7 +11,7 @@ var
   sitemapUrl = argv.url,
   report = argv.report,
   fileName = argv.filename || 'report.csv',
-  reports = ['Fresh', 'Health', 'Deadlinks', 'Html', 'Wcag', 'Pagespeed', 'Meta'],
+  reports = ['Fresh', 'Health', 'Links', 'Deadlinks', 'Html', 'Wcag', 'Pagespeed', 'Meta'],
   validReport = false;
 
 if(reports.indexOf(report) > -1) {
