@@ -21,7 +21,6 @@ function checkMyHealth(pageUrl, callback){
         data = {url:thisUrl, statusCode:response.statusCode};
       callback(null, data);
     }
-
   });
 
 }
@@ -33,18 +32,12 @@ function getMetadata(pageUrl, callback) {
     }
     if (!error && response.statusCode == 200) {
       var
-        result = {},
         $ = cheerio.load(body.toString()),
         title = $('title').text(),
         keywords = $('meta[name=keywords]').attr('content'),
         description = $('meta[name=description]').attr('content');
 
-      result.url = pageUrl;
-      result.title = title;
-      result.keywords = keywords;
-      result.description = description;
-
-      callback(null, result);
+      callback(null, {url:pageUrl, title:title, keywords:keywords, description:description});
     }
   });
 }
@@ -57,11 +50,8 @@ function getPagespeedReport(pageUrl, callback){
     if(error){
       return callback(error, null);
     } else {
-
       return callback(null, {'url': pageUrl, 'result': JSON.parse(body.toString())})
-
     }
-
   });
 }
 
@@ -73,16 +63,14 @@ function validateWcag(pageUrl, callback){
     if(error){
       return callback(error, null);
     } else {
-
       parser.parseString(body.toString(), function (err, result) {
         if (err) {
           return callback(err, null);
+        } else {
+          return callback(null, {'url': pageUrl, 'result':result});
         }
-        return callback(null, {'url': pageUrl, 'result':result});
       });
-
     }
-
   });
 }
 
@@ -131,7 +119,7 @@ function checkPageLinks(pageUrl, stream, links){
 function getPageLinks(url, callback) {
   request(url, function(error, response, body){
     if (error) {
-      callback(error, null, null);
+      callback(error, null);
     }
     if (!error && response.statusCode == 200) {
       var
@@ -143,7 +131,7 @@ function getPageLinks(url, callback) {
         if(elem.attribs.href && elem.attribs.href.indexOf('http') > -1) {
           links.push(elem.attribs.href);
         }
-      })
+      });
 
       callback(null, {url:url, links:links});
     }
@@ -241,7 +229,6 @@ module.exports = {
           checkPageLinks(data.url, stream, data.links);
         }
       });
-
     }
   },
   mkReportHealth: function(pages, stream){
@@ -263,7 +250,6 @@ module.exports = {
           stream.push(JSON.stringify([data.url, data.statusCode]))
         }
       })
-
     }
   },
   mkReportHtml: function(pages, stream){
@@ -289,7 +275,6 @@ module.exports = {
           }
         }
       });
-
     }
   },
   mkReportWcag: function(pages, stream){
@@ -314,11 +299,8 @@ module.exports = {
             console.log('Something is wrong: ' + data);
           }
         }
-
       });
-
     }
-
   },
   mkReportPagespeed: function(pages, stream){
     var
@@ -342,11 +324,8 @@ module.exports = {
             console.log('Something is wrong: ' + data);
           }
         }
-
       });
-
     }
-
   },
   mkReportMeta: function(pages, stream){
     var
@@ -372,9 +351,7 @@ module.exports = {
         }
 
       });
-
     }
-
   }
 
 };
