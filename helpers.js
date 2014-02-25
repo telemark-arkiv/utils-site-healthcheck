@@ -150,6 +150,10 @@ function getPageLinks(url, callback) {
   });
 }
 
+function daysBetween(date1, date2){
+  return Math.floor((date1 - date2)/(1000 * 60 * 60 * 24));
+}
+
 module.exports = {
 
   getPages: function(urlToSitemap, callback){
@@ -174,10 +178,6 @@ module.exports = {
       headers = ['location', 'last_modified'];
 
     stream.push(JSON.stringify(headers));
-
-    function daysBetween(date1, date2){
-      return Math.floor((date1 - date2)/(1000 * 60 * 60 * 24));
-    }
 
     for(var i=0;i < pagesLength; i++){
       var
