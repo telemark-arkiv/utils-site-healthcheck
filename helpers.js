@@ -145,7 +145,7 @@ function getPageLinks(url, callback) {
         }
       })
 
-      callback(null, url, links);
+      callback(null, {url:url, links:links});
     }
   });
 }
@@ -203,19 +203,19 @@ module.exports = {
         page = pages[i],
         location = page.loc[0];
 
-      getPageLinks(location, function(err, pageUrl, links){
+      getPageLinks(location, function(err, data){
         if(err){
           console.log(err);
         } else {
 
           var
-            linksLength = links.length;
+            linksLength = data.links.length;
 
           for(var i=0;i < linksLength; i++){
             var
-              link = links[i];
+              link = data.links[i];
 
-            stream.push(JSON.stringify([pageUrl, link]));
+            stream.push(JSON.stringify([data.url, link]));
           }
         }
       });
@@ -234,11 +234,11 @@ module.exports = {
         page = pages[i],
         location = page.loc[0];
 
-      getPageLinks(location, function(err, pageUrl, links){
+      getPageLinks(location, function(err, data){
         if(err){
           console.log(err);
         } else {
-          checkPageLinks(pageUrl, stream, links);
+          checkPageLinks(data.url, stream, data.links);
         }
       });
 
