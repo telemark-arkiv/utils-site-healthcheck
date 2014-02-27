@@ -5,15 +5,10 @@
 var
   helpers = require('./helpers');
 
-function daysBetween(date1, date2){
-  return Math.floor((date1 - date2)/(1000 * 60 * 60 * 24));
-}
-
 module.exports = {
 
   mkReportFresh: function(pages, stream){
     var
-      today = new Date(),
       pagesLength = pages.length,
       headers = ['location', 'last_modified'];
 
@@ -21,15 +16,16 @@ module.exports = {
 
     for(var i=0;i < pagesLength; i++){
       var
-        page = pages[i],
-        pageModified = new Date(page.lastmod[0]),
-        location = page.loc[0],
-        last_modified = daysBetween(today, pageModified),
-        data = [location, last_modified];
+        page = pages[i];
 
-      stream.push(JSON.stringify(data));
+      helpers.getPageDaysSinceLastUpdate(page, function(err, data){
+        if(err){
+          console.log(err);
+        } else {
+          stream.push(JSON.stringify(data));
+        }
+      });
     }
-
   },
   mkReportLinks: function(pages, stream){
     var

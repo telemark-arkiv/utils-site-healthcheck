@@ -10,6 +10,10 @@ var
   acheckerID = 'insert-achecker-webserviceID-here',
   pagespeedAPIKey = 'insert-google-API-key-here';
 
+function daysBetween(date1, date2){
+  return Math.floor((date1 - date2)/(1000 * 60 * 60 * 24));
+}
+
 function checkLink(pageUrl, linkUrl, callback){
   request(linkUrl, function(error, response, body){
     if (error) {
@@ -37,6 +41,15 @@ module.exports = {
         });
       }
     })
+  },
+  getPageDaysSinceLastUpdate: function(page, callback){
+    var
+      today = new Date(),
+      pageModified = new Date(page.lastmod[0]),
+      location = page.loc[0],
+      last_modified = daysBetween(today, pageModified);
+
+    return callback(null, [location, last_modified]);
   },
   getPageLinks: function(url, callback) {
     request(url, function(error, response, body){
