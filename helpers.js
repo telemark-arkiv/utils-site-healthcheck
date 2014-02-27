@@ -109,7 +109,15 @@ module.exports = {
       if(error){
         return callback(error, null);
       } else {
-        return callback(null, JSON.parse(body.toString()));
+        var
+          result = JSON.parse(body.toString()),
+          data = [result.url, "Valid"];
+
+        if(result.messages.length > 0){
+          data = [result.url, "Errors"];
+        }
+
+        return callback(null, data);
       }
     });
   },

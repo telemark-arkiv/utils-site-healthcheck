@@ -116,11 +116,7 @@ module.exports = {
         if(err){
           console.log(err);
         } else {
-          if(data.messages.length > 0){
-            stream.push(JSON.stringify([data.url, "Errors"]));
-          } else {
-            stream.push(JSON.stringify([data.url, "Valid"]));
-          }
+          stream.push(JSON.stringify(data));
         }
       });
     }
