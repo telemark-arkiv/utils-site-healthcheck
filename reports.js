@@ -95,7 +95,7 @@ module.exports = {
         if(err){
           console.log(err);
         } else {
-          stream.push(JSON.stringify([data.url, data.statusCode]))
+          stream.push(JSON.stringify(data))
         }
       })
     }

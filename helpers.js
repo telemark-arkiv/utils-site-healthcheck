@@ -96,7 +96,7 @@ module.exports = {
       } else {
         var
           thisUrl = response.request.uri.href,
-          data = {url:thisUrl, statusCode:response.statusCode};
+          data = [thisUrl, response.statusCode];
         return callback(null, data);
       }
     });
