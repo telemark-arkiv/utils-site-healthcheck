@@ -179,13 +179,8 @@ module.exports = {
         if(err){
           console.log(err);
         } else {
-          if (data.url){
-            stream.push(JSON.stringify([data.url, data.title, data.keywords, data.description]));
-          } else {
-            console.log('Something is wrong: ' + data);
-          }
+          stream.push(JSON.stringify(data));
         }
-
       });
     }
   }

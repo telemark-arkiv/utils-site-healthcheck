@@ -173,7 +173,9 @@ module.exports = {
           keywords = $('meta[name=keywords]').attr('content'),
           description = $('meta[name=description]').attr('content');
 
-        return callback(null, {url:pageUrl, title:title, keywords:keywords, description:description});
+        return callback(null, [pageUrl, title, keywords, description]);
+      } else {
+        return callback({'Error': 'Wrong statuscode: ' + response.statusCode}, null)
       }
     });
   }
