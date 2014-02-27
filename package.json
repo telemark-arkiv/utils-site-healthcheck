@@ -1,10 +1,18 @@
 {
   "name": "utils-site-healthcheck",
   "private": true,
-  "version": "0.0.2",
+  "version": "0.1.0",
   "author": {
     "name": "Geir Gåsodden",
     "email": "geir.gasodden@pythonia.no"
+  },
+  "main": "index.js",
+  "repository": {
+    "type": "git",
+    "url": "http://github.com/telemark/utils-site-healthcheck.git"
+  },
+  "bugs": {
+    "url": "http://github.com/telemark/utils-site-healthcheck/issues"
   },
   "dependencies": {
     "request": "~2.33.0",

@@ -7,14 +7,15 @@ var
   fs = require('fs'),
   stream = require('stream'),
   helpers = require('./helpers'),
+  reports = require('./reports'),
   argv = require('minimist')(process.argv.slice(2)),
   sitemapUrl = argv.url,
   report = argv.report,
   fileName = argv.filename || 'report.csv',
-  reports = ['Fresh', 'Health', 'Links', 'Deadlinks', 'Html', 'Wcag', 'Pagespeed', 'Meta'],
+  validReports = ['Fresh', 'Health', 'Links', 'Deadlinks', 'Html', 'Wcag', 'Pagespeed', 'Meta'],
   validReport = false;
 
-if(reports.indexOf(report) > -1) {
+if(validReports.indexOf(report) > -1) {
   validReport = true;
 }
 
@@ -27,7 +28,7 @@ if (sitemapUrl && report && fileName && validReport) {
         writeStream = fs.createWriteStream(fileName),
         reader = stream.PassThrough(),
         writer = csv.createCsvStreamWriter(writeStream),
-        thisReport = helpers['mkReport' + report];
+        thisReport = reports['mkReport' + report];
 
       reader.on('data', function(data){
         writer.writeRecord(JSON.parse(data.toString()));
@@ -43,5 +44,5 @@ if (sitemapUrl && report && fileName && validReport) {
   console.log('Missing required arguments or invalid report type');
   console.log('Usage:');
   console.log('node index.js --url=url-to-parse --report=type-of-report --filename=filename-to-save');
-  console.log('Valid report types: ' + reports.join(', '));
+  console.log('Valid report types: ' + validReports.join(', '));
 }
