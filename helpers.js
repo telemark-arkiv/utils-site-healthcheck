@@ -133,7 +133,11 @@ module.exports = {
           if (err) {
             return callback(err, null);
           } else {
-            return callback(null, {'url': pageUrl, 'result':result});
+            if (result){
+              return callback(null, [pageUrl, result.resultset.summary[0].NumOfErrors[0]]);
+            } else {
+              return callback({'Error' : 'Something is wrong: ' + result}, null)
+            }
           }
         });
       }
