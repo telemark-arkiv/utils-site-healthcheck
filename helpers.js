@@ -151,7 +151,13 @@ module.exports = {
       if(error){
         return callback(error, null);
       } else {
-        return callback(null, {'url': pageUrl, 'result': JSON.parse(body.toString())})
+        var
+          result = JSON.parse(body.toString());
+        if(result.score){
+          return callback(null, [pageUrl, result.score]);
+        } else {
+          return callback({'Error' : 'Something is wrong: ' + result}, null);
+        }
       }
     });
   },

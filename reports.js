@@ -137,7 +137,7 @@ module.exports = {
         if(err){
           console.log(err);
         } else {
-            stream.push(JSON.stringify(data);
+            stream.push(JSON.stringify(data));
         }
       });
     }
@@ -158,11 +158,7 @@ module.exports = {
         if(err){
           console.log(err);
         } else {
-          if (data.result){
-            stream.push(JSON.stringify([data.url, data.result.score]));
-          } else {
-            console.log('Something is wrong: ' + data);
-          }
+          stream.push(JSON.stringify(data));
         }
       });
     }
