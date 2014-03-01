@@ -7,8 +7,8 @@ var
   cheerio = require('cheerio'),
   xml2js = require('xml2js'),
   parser = new xml2js.Parser(),
-  acheckerID = 'insert-achecker-webserviceID-here',
-  pagespeedAPIKey = 'insert-google-API-key-here';
+  acheckerID = 'insert-your-achecker-webserviceID-here',
+  pagespeedAPIKey = 'insert-your-google-APIkey-here';
 
 function daysBetween(date1, date2){
   return Math.floor((date1 - date2)/(1000 * 60 * 60 * 24));
@@ -20,9 +20,19 @@ function checkLink(pageUrl, linkUrl, callback){
       return callback(error, null);
     }
     if (!error && response.statusCode != 200) {
-      return callback (null, [pageUrl, linkUrl, response.statusCode]);
+      var
+        ret = mkCsvRowFromArray([pageUrl, linkUrl, response.statusCode]);
+      return callback (null, ret);
     }
   });
+}
+
+function mkCsvRowFromArray(arr){
+  var
+    a = arr.map(function(i){
+      return '"' + i + '"'
+    });
+  return a.join(',') + '\r\n'
 }
 
 module.exports = {
@@ -47,9 +57,10 @@ module.exports = {
       today = new Date(),
       pageModified = new Date(page.lastmod[0]),
       location = page.loc[0],
-      last_modified = daysBetween(today, pageModified);
+      last_modified = daysBetween(today, pageModified),
+      ret = mkCsvRowFromArray([location, last_modified]);
 
-    return callback(null, [location, last_modified]);
+    return callback(null, ret);
   },
   getPageLinks: function(url, callback) {
     request(url, function(error, response, body){
@@ -84,7 +95,7 @@ module.exports = {
         if(err){
           console.log(err);
         } else {
-          stream.push(JSON.stringify(data));
+          stream.push(data);
         }
       });
     }
@@ -96,7 +107,7 @@ module.exports = {
       } else {
         var
           thisUrl = response.request.uri.href,
-          data = [thisUrl, response.statusCode];
+          data = mkCsvRowFromArray([thisUrl, response.statusCode]);
         return callback(null, data);
       }
     });
@@ -111,10 +122,10 @@ module.exports = {
       } else {
         var
           result = JSON.parse(body.toString()),
-          data = [result.url, "Valid"];
+          data = mkCsvRowFromArray([result.url, "Valid"]);
 
         if(result.messages.length > 0){
-          data = [result.url, "Errors"];
+          data = mkCsvRowFromArray([result.url, "Errors"]);
         }
 
         return callback(null, data);
@@ -134,7 +145,9 @@ module.exports = {
             return callback(err, null);
           } else {
             if (result){
-              return callback(null, [pageUrl, result.resultset.summary[0].NumOfErrors[0]]);
+              var
+                ret = mkCsvRowFromArray([pageUrl, result.resultset.summary[0].NumOfErrors[0]]);
+              return callback(null, ret);
             } else {
               return callback({'Error' : 'Something is wrong: ' + result}, null)
             }
@@ -154,7 +167,9 @@ module.exports = {
         var
           result = JSON.parse(body.toString());
         if(result.score){
-          return callback(null, [pageUrl, result.score]);
+          var
+            ret = mkCsvRowFromArray([pageUrl, result.score]);
+          return callback(null, ret);
         } else {
           return callback({'Error' : 'Something is wrong: ' + result}, null);
         }
@@ -172,8 +187,9 @@ module.exports = {
           title = $('title').text(),
           keywords = $('meta[name=keywords]').attr('content'),
           description = $('meta[name=description]').attr('content');
+          ret = mkCsvRowFromArray([pageUrl, title, keywords, description]);
 
-        return callback(null, [pageUrl, title, keywords, description]);
+        return callback(null, ret);
       } else {
         return callback({'Error': 'Wrong statuscode: ' + response.statusCode}, null)
       }

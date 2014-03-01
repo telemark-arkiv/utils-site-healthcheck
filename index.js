@@ -3,7 +3,6 @@
  */
 
 var
-  csv = require('ya-csv'),
   fs = require('fs'),
   stream = require('stream'),
   helpers = require('./helpers'),
@@ -26,17 +25,14 @@ if (sitemapUrl && report && fileName && validReport) {
     } else {
       var
         writeStream = fs.createWriteStream(fileName),
-        reader = stream.PassThrough(),
-        writer = csv.createCsvStreamWriter(writeStream),
+        readStream = stream.PassThrough(),
         thisReport = reports['mkReport' + report];
 
-      reader.on('data', function(data){
-        writer.writeRecord(JSON.parse(data.toString()));
-      });
+      readStream.pipe(writeStream);
 
       console.log('Generates report type "' + report + '"');
 
-      thisReport(pages, reader);
+      thisReport(pages, readStream);
 
     }
   })

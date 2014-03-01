@@ -5,14 +5,22 @@
 var
   helpers = require('./helpers');
 
+function mkCsvRowFromArray(arr){
+  var
+    a = arr.map(function(i){
+      return '"' + i + '"'
+    });
+  return a.join(',') + '\r\n'
+}
+
 module.exports = {
 
   mkReportFresh: function(pages, stream){
     var
       pagesLength = pages.length,
-      headers = ['location', 'last_modified'];
+      headers = mkCsvRowFromArray(['location', 'last_modified']);
 
-    stream.push(JSON.stringify(headers));
+    stream.push(headers);
 
     for(var i=0;i < pagesLength; i++){
       var
@@ -22,7 +30,7 @@ module.exports = {
         if(err){
           console.log(err);
         } else {
-          stream.push(JSON.stringify(data));
+          stream.push(data);
         }
       });
     }
@@ -30,9 +38,9 @@ module.exports = {
   mkReportLinks: function(pages, stream){
     var
       pagesLength = pages.length,
-      headers = ['location', 'link'];
+      headers = mkCsvRowFromArray(['location', 'link']);
 
-    stream.push(JSON.stringify(headers));
+    stream.push(headers);
 
     for(var i=0;i < pagesLength; i++){
       var
@@ -49,9 +57,10 @@ module.exports = {
 
           for(var i=0;i < linksLength; i++){
             var
-              link = data.links[i];
+              link = data.links[i],
+              ret = mkCsvRowFromArray([data.url, link]);
 
-            stream.push(JSON.stringify([data.url, link]));
+            stream.push(ret);
           }
         }
       });
@@ -61,9 +70,9 @@ module.exports = {
   mkReportDeadlinks: function(pages, stream){
     var
       pagesLength = pages.length,
-      headers = ['location', 'link', 'status_code'];
+      headers = mkCsvRowFromArray(['location', 'link', 'status_code']);
 
-    stream.push(JSON.stringify(headers));
+    stream.push(headers);
 
     for(var i=0;i < pagesLength; i++){
       var
@@ -82,9 +91,9 @@ module.exports = {
   mkReportHealth: function(pages, stream){
     var
       pagesLength = pages.length,
-      headers = ['location', 'status_code'];
+      headers = mkCsvRowFromArray(['location', 'status_code']);
 
-    stream.push(JSON.stringify(headers));
+    stream.push(headers);
 
     for(var i=0;i < pagesLength; i++){
       var
@@ -95,7 +104,7 @@ module.exports = {
         if(err){
           console.log(err);
         } else {
-          stream.push(JSON.stringify(data))
+          stream.push(data);
         }
       })
     }
@@ -103,9 +112,9 @@ module.exports = {
   mkReportHtml: function(pages, stream){
     var
       pagesLength = pages.length,
-      headers = ['location', 'status'];
+      headers = mkCsvRowFromArray(['location', 'status']);
 
-    stream.push(JSON.stringify(headers));
+    stream.push(headers);
 
     for(var i=0;i < pagesLength; i++){
       var
@@ -116,7 +125,7 @@ module.exports = {
         if(err){
           console.log(err);
         } else {
-          stream.push(JSON.stringify(data));
+          stream.push(data);
         }
       });
     }
@@ -124,9 +133,9 @@ module.exports = {
   mkReportWcag: function(pages, stream){
     var
       pagesLength = pages.length,
-      headers = ['location', 'errors'];
+      headers = mkCsvRowFromArray(['location', 'errors']);
 
-    stream.push(JSON.stringify(headers));
+    stream.push(headers);
 
     for(var i=0;i < pagesLength; i++){
       var
@@ -137,7 +146,7 @@ module.exports = {
         if(err){
           console.log(err);
         } else {
-            stream.push(JSON.stringify(data));
+            stream.push(data);
         }
       });
     }
@@ -145,9 +154,9 @@ module.exports = {
   mkReportPagespeed: function(pages, stream){
     var
       pagesLength = pages.length,
-      headers = ['location', 'score'];
+      headers = mkCsvRowFromArray(['location', 'score']);
 
-    stream.push(JSON.stringify(headers));
+    stream.push(headers);
 
     for(var i=0;i < pagesLength; i++){
       var
@@ -158,7 +167,7 @@ module.exports = {
         if(err){
           console.log(err);
         } else {
-          stream.push(JSON.stringify(data));
+          stream.push(data);
         }
       });
     }
@@ -166,9 +175,9 @@ module.exports = {
   mkReportMeta: function(pages, stream){
     var
       pagesLength = pages.length,
-      headers = ['location', 'title', 'keywords', 'description'];
+      headers = mkCsvRowFromArray(['location', 'title', 'keywords', 'description']);
 
-    stream.push(JSON.stringify(headers));
+    stream.push(headers);
 
     for(var i=0;i < pagesLength; i++){
       var
@@ -179,7 +188,7 @@ module.exports = {
         if(err){
           console.log(err);
         } else {
-          stream.push(JSON.stringify(data));
+          stream.push(data);
         }
       });
     }
