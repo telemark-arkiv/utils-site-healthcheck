@@ -17,7 +17,9 @@ function daysBetween(date1, date2){
 function checkLink(pageUrl, linkUrl, callback){
   request(linkUrl, function(error, response, body){
     if (error) {
-      return callback(error, null);
+      var
+        ret = mkCsvRowFromArray([pageUrl, linkUrl, "Unknown error"]);
+      return callback(error, ret);
     }
     if (!error && response.statusCode != 200) {
       var
@@ -94,6 +96,7 @@ module.exports = {
       checkLink(pageUrl, link, function(err, data){
         if(err){
           console.log(err);
+          stream.push(data);
         } else {
           stream.push(data);
         }
