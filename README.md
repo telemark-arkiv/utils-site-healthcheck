@@ -122,10 +122,6 @@ Simple XML to JavaScript object converter.
 parse argument options
 [NPM](https://www.npmjs.org/package/minimist) [GitHub](https://github.com/substack/minimist)
 
-###ya-csv###
-CSV parser and generator for Node.js
-[NPM](https://www.npmjs.org/package/ya-csv) [GitHub](https://github.com/koles/ya-csv)
-
 ###cheerio###
 Tiny, fast, and elegant implementation of core jQuery designed specifically for the server.
 [NPM](https://www.npmjs.org/package/cheerio) [GitHub](https://github.com/MatthewMueller/cheerio)
