@@ -7,7 +7,7 @@ var
   cheerio = require('cheerio'),
   xml2js = require('xml2js'),
   parser = new xml2js.Parser(),
-  acheckerID = 'insert-achecker-webserviceID-here',
+  acheckerID = '32bab43d166df41d242aec90e6ec6c04d9eb241c',
   pagespeedAPIKey = 'insert-google-API-key-here';
 
 function daysBetween(date1, date2){
