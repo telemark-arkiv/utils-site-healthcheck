@@ -107,15 +107,13 @@ module.exports = {
     validateHtml({url:pageUrl, format:'json'}, function(err, result){
       if(err){
         return callback(err, null);
-      } else {
-        var data = mkCsvRowFromArray([result.url, "Valid"]);
-
-        if(result.messages.length > 0){
-          data = mkCsvRowFromArray([result.url, "Errors"]);
-        }
-
-        return callback(null, data);
       }
+
+      var res = result.messages.length > 0 ? "Errors" : "Valid"
+        , data = mkCsvRowFromArray([result.url, res]);
+
+      return callback(null, data);
+
     });
 
   },
