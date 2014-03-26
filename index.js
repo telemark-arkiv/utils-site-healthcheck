@@ -1,7 +1,3 @@
-/**
- * Created by geir on 16/02/14.
- */
-
 var fs = require('fs')
   , stream = require('stream')
   , helpers = require('./helpers')
