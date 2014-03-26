@@ -1,5 +1,6 @@
 var request = require('request')
   , cheerio = require('cheerio')
+  , validateHtml = require('html-validator')
   , xml2js = require('xml2js')
   , parser = new xml2js.Parser()
   , acheckerID = 'insert-your-achecker-webserviceID-here'
@@ -103,15 +104,11 @@ module.exports = {
     });
   },
   validateThisPageHtml: function(pageUrl, callback){
-    var
-      url = 'http://html5.validator.nu/?doc=' + pageUrl + '&out=json';
-
-    request(url, function(error, response, body){
-      if(error){
-        return callback(error, null);
+    validateHtml({url:pageUrl, format:'json'}, function(err, result){
+      if(err){
+        return callback(err, null);
       } else {
-        var result = JSON.parse(body.toString())
-          , data = mkCsvRowFromArray([result.url, "Valid"]);
+        var data = mkCsvRowFromArray([result.url, "Valid"]);
 
         if(result.messages.length > 0){
           data = mkCsvRowFromArray([result.url, "Errors"]);
@@ -120,6 +117,7 @@ module.exports = {
         return callback(null, data);
       }
     });
+
   },
   validateThisPageWcag: function(pageUrl, callback){
     var acheckerUrl = 'http://achecker.ca/checkacc.php?uri=' + pageUrl + '&id=' + acheckerID + '&output=rest';
