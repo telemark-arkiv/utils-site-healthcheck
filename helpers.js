@@ -137,7 +137,7 @@ module.exports = {
               var ret = mkCsvRowFromArray([pageUrl, result.resultset.summary[0].NumOfErrors[0]]);
               return callback(null, ret);
             } else {
-              return callback({'Error' : 'Something is wrong: ' + result}, null)
+              return callback(new Error('Something is wrong: ' + result), null)
             }
           }
         });
@@ -156,7 +156,7 @@ module.exports = {
           var ret = mkCsvRowFromArray([pageUrl, result.score]);
           return callback(null, ret);
         } else {
-          return callback({'Error' : 'Something is wrong: ' + result}, null);
+          return callback(new Error('Something is wrong: ' + result), null);
         }
       }
     });
@@ -176,7 +176,7 @@ module.exports = {
 
         return callback(null, ret);
       } else {
-        return callback({'Error': 'Wrong statuscode: ' + response.statusCode}, null)
+        return callback(new Error('Wrong statuscode: ' + response.statusCode), null)
       }
     });
   }
