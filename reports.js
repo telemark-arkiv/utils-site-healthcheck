@@ -20,7 +20,7 @@ module.exports = {
 
       helpers.getPageDaysSinceLastUpdate(page, function(err, data){
         if(err){
-          console.log(err);
+          console.error(err);
         } else {
           stream.push(data);
         }
@@ -39,7 +39,7 @@ module.exports = {
 
       helpers.getPageLinks(location, function(err, data){
         if(err){
-          console.log(err);
+          console.error(err);
         } else {
 
           var linksLength = data.links.length;
@@ -67,7 +67,7 @@ module.exports = {
 
       helpers.getPageLinks(location, function(err, data){
         if(err){
-          console.log(err);
+          console.error(err);
         } else {
           helpers.checkPageLinks(data.url, stream, data.links);
         }
@@ -86,7 +86,7 @@ module.exports = {
 
       helpers.checkPageStatus(location, function(err, data){
         if(err){
-          console.log(err);
+          console.error(err);
         } else {
           stream.push(data);
         }
@@ -105,7 +105,7 @@ module.exports = {
 
       helpers.validateThisPageHtml(location, function(err, data){
         if(err){
-          console.log(err);
+          console.error(err);
         } else {
           stream.push(data);
         }
@@ -124,7 +124,7 @@ module.exports = {
 
       helpers.validateThisPageWcag(location, function(err, data){
         if(err){
-          console.log(err);
+          console.error(err);
         } else {
             stream.push(data);
         }
@@ -143,7 +143,7 @@ module.exports = {
 
       helpers.getPagespeedReport(location, function(err, data){
         if(err){
-          console.log(err);
+          console.error(err);
         } else {
           stream.push(data);
         }
@@ -162,7 +162,7 @@ module.exports = {
 
       helpers.getPageMetadata(location, function(err, data){
         if(err){
-          console.log(err);
+          console.error(err);
         } else {
           stream.push(data);
         }
