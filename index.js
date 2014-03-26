@@ -2,17 +2,16 @@
  * Created by geir on 16/02/14.
  */
 
-var
-  fs = require('fs'),
-  stream = require('stream'),
-  helpers = require('./helpers'),
-  reports = require('./reports'),
-  argv = require('minimist')(process.argv.slice(2)),
-  sitemapUrl = argv.url,
-  report = argv.report,
-  fileName = argv.filename || 'report.csv',
-  validReports = ['Fresh', 'Health', 'Links', 'Deadlinks', 'Html', 'Wcag', 'Pagespeed', 'Meta'],
-  validReport = false;
+var fs = require('fs')
+  , stream = require('stream')
+  , helpers = require('./helpers')
+  , reports = require('./reports')
+  , argv = require('minimist')(process.argv.slice(2))
+  , sitemapUrl = argv.url
+  , report = argv.report
+  , fileName = argv.filename || 'report.csv'
+  , validReports = ['Fresh', 'Health', 'Links', 'Deadlinks', 'Html', 'Wcag', 'Pagespeed', 'Meta']
+  , validReport = false;
 
 if(validReports.indexOf(report) > -1) {
   validReport = true;
@@ -21,7 +20,7 @@ if(validReports.indexOf(report) > -1) {
 if (sitemapUrl && report && fileName && validReport) {
   helpers.getPages(sitemapUrl, function(err, pages){
     if (err) {
-      console.log(err);
+      console.error(err);
     } else {
       var
         writeStream = fs.createWriteStream(fileName),
