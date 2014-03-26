@@ -84,7 +84,6 @@ module.exports = {
 
       checkLink(pageUrl, link, function(err, data){
         if(err){
-          console.log(err);
           stream.push(data);
         } else {
           stream.push(data);
