@@ -1,4 +1,5 @@
-var helpers = require('./helpers');
+var helpers = require('./helpers')
+  , validateHtml = require('html-validator');
 
 function mkCsvRowFromArray(arr){
   var a = arr.map(function(i){
@@ -103,10 +104,12 @@ module.exports = {
       var page = pages[i]
         , location = page.loc[0];
 
-      helpers.validateThisPageHtml(location, function(err, data){
+      validateHtml({url:location, format:'json'}, function(err, result){
         if(err){
           console.error(err);
         } else {
+          var res = result.messages.length > 0 ? "Errors" : "Valid"
+            , data = mkCsvRowFromArray([result.url, res]);
           stream.push(data);
         }
       });
