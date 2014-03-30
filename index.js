@@ -35,7 +35,7 @@ if (sitemapUrl && report && fileName && validReport) {
       thisReport(pages, readStream);
 
     }
-  })
+  });
 } else {
   console.log('Missing required arguments or invalid report type');
   console.log('Usage:');

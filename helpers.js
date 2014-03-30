@@ -7,8 +7,8 @@ var
   cheerio = require('cheerio'),
   xml2js = require('xml2js'),
   parser = new xml2js.Parser(),
-  acheckerID = 'insert-your-achecker-webserviceID-here',
-  pagespeedAPIKey = 'insert-your-google-APIkey-here';
+  acheckerID = 'insert-your-achecker-WebserviceID-here',
+  pagespeedAPIKey = 'insert-your-google-API-key-here';
 
 function daysBetween(date1, date2){
   return Math.floor((date1 - date2)/(1000 * 60 * 60 * 24));
