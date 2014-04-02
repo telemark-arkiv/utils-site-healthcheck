@@ -19,6 +19,6 @@
     "xml2js": "~0.4.1",
     "minimist": "0.0.7",
     "cheerio": "~0.13.1",
-    "html-validator": "0.0.3"
+    "html-validator": "0.0.4"
   }
 }
