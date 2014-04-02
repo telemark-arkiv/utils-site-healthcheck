@@ -1,14 +1,9 @@
-/**
- * Created by geir on 16/02/14.
- */
-
-var
-  request = require('request'),
-  cheerio = require('cheerio'),
-  xml2js = require('xml2js'),
-  parser = new xml2js.Parser(),
-  acheckerID = 'insert-your-achecker-webserviceID-here',
-  pagespeedAPIKey = 'insert-your-google-APIkey-here';
+var request = require('request')
+  , cheerio = require('cheerio')
+  , xml2js = require('xml2js')
+  , parser = new xml2js.Parser()
+  , acheckerID = 'insert-your-achecker-webserviceID-here'
+  , pagespeedAPIKey = 'insert-your-google-APIkey-here';
 
 function daysBetween(date1, date2){
   return Math.floor((date1 - date2)/(1000 * 60 * 60 * 24));
@@ -17,23 +12,21 @@ function daysBetween(date1, date2){
 function checkLink(pageUrl, linkUrl, callback){
   request(linkUrl, function(error, response, body){
     if (error) {
-      var
-        ret = mkCsvRowFromArray([pageUrl, linkUrl, "Unknown error"]);
+      var ret = mkCsvRowFromArray([pageUrl, linkUrl, "Unknown error"]);
+
       return callback(error, ret);
     }
     if (!error && response.statusCode != 200) {
-      var
-        ret = mkCsvRowFromArray([pageUrl, linkUrl, response.statusCode]);
+      var ret = mkCsvRowFromArray([pageUrl, linkUrl, response.statusCode]);
       return callback (null, ret);
     }
   });
 }
 
 function mkCsvRowFromArray(arr){
-  var
-    a = arr.map(function(i){
-      return '"' + i + '"'
-    });
+  var a = arr.map(function(i){
+        return '"' + i + '"'
+      });
   return a.join(',') + '\r\n'
 }
 
@@ -55,12 +48,11 @@ module.exports = {
     })
   },
   getPageDaysSinceLastUpdate: function(page, callback){
-    var
-      today = new Date(),
-      pageModified = new Date(page.lastmod[0]),
-      location = page.loc[0],
-      last_modified = daysBetween(today, pageModified),
-      ret = mkCsvRowFromArray([location, last_modified]);
+    var today = new Date()
+      , pageModified = new Date(page.lastmod[0])
+      , location = page.loc[0]
+      , last_modified = daysBetween(today, pageModified)
+      , ret = mkCsvRowFromArray([location, last_modified]);
 
     return callback(null, ret);
   },
@@ -70,10 +62,9 @@ module.exports = {
         return callback(error, null);
       }
       if (!error && response.statusCode == 200) {
-        var
-          $ = cheerio.load(body.toString()),
-          allAs = $('a'),
-          links = [];
+        var $ = cheerio.load(body.toString())
+          , allAs = $('a')
+          , links = [];
 
         allAs.each(function(i, elem){
           if(elem.attribs.href && elem.attribs.href.indexOf('http') > -1) {
@@ -86,16 +77,13 @@ module.exports = {
     });
   },
   checkPageLinks: function(pageUrl, stream, links){
-    var
-      linksLength = links.length;
+    var linksLength = links.length;
 
     for(var i=0;i < linksLength; i++){
-      var
-        link = links[i];
+      var link = links[i];
 
       checkLink(pageUrl, link, function(err, data){
         if(err){
-          console.log(err);
           stream.push(data);
         } else {
           stream.push(data);
@@ -108,36 +96,14 @@ module.exports = {
       if (error) {
         return callback(error, null);
       } else {
-        var
-          thisUrl = response.request.uri.href,
-          data = mkCsvRowFromArray([thisUrl, response.statusCode]);
-        return callback(null, data);
-      }
-    });
-  },
-  validateThisPageHtml: function(pageUrl, callback){
-    var
-      url = 'http://html5.validator.nu/?doc=' + pageUrl + '&out=json';
-
-    request(url, function(error, response, body){
-      if(error){
-        return callback(error, null);
-      } else {
-        var
-          result = JSON.parse(body.toString()),
-          data = mkCsvRowFromArray([result.url, "Valid"]);
-
-        if(result.messages.length > 0){
-          data = mkCsvRowFromArray([result.url, "Errors"]);
-        }
-
+        var thisUrl = response.request.uri.href
+          , data = mkCsvRowFromArray([thisUrl, response.statusCode]);
         return callback(null, data);
       }
     });
   },
   validateThisPageWcag: function(pageUrl, callback){
-    var
-      acheckerUrl = 'http://achecker.ca/checkacc.php?uri=' + pageUrl + '&id=' + acheckerID + '&output=rest';
+    var acheckerUrl = 'http://achecker.ca/checkacc.php?uri=' + pageUrl + '&id=' + acheckerID + '&output=rest';
 
     request(acheckerUrl, function(error, response, body){
       if(error){
@@ -148,11 +114,10 @@ module.exports = {
             return callback(err, null);
           } else {
             if (result){
-              var
-                ret = mkCsvRowFromArray([pageUrl, result.resultset.summary[0].NumOfErrors[0]]);
+              var ret = mkCsvRowFromArray([pageUrl, result.resultset.summary[0].NumOfErrors[0]]);
               return callback(null, ret);
             } else {
-              return callback({'Error' : 'Something is wrong: ' + result}, null)
+              return callback(new Error('Something is wrong: ' + result), null)
             }
           }
         });
@@ -160,21 +125,18 @@ module.exports = {
     });
   },
   getPagespeedReport: function(pageUrl, callback){
-    var
-      pagespeedUrl = 'https://www.googleapis.com/pagespeedonline/v1/runPagespeed?url='+ pageUrl + '&key=' + pagespeedAPIKey;
+    var pagespeedUrl = 'https://www.googleapis.com/pagespeedonline/v1/runPagespeed?url='+ pageUrl + '&key=' + pagespeedAPIKey;
 
     request(pagespeedUrl, function(error, response, body){
       if(error){
         return callback(error, null);
       } else {
-        var
-          result = JSON.parse(body.toString());
+        var result = JSON.parse(body.toString());
         if(result.score){
-          var
-            ret = mkCsvRowFromArray([pageUrl, result.score]);
+          var ret = mkCsvRowFromArray([pageUrl, result.score]);
           return callback(null, ret);
         } else {
-          return callback({'Error' : 'Something is wrong: ' + result}, null);
+          return callback(new Error('Something is wrong: ' + result), null);
         }
       }
     });
@@ -185,16 +147,16 @@ module.exports = {
         return callback(error, null);
       }
       if (!error && response.statusCode == 200) {
-        var
-          $ = cheerio.load(body.toString()),
-          title = $('title').text(),
-          keywords = $('meta[name=keywords]').attr('content'),
-          description = $('meta[name=description]').attr('content');
-          ret = mkCsvRowFromArray([pageUrl, title, keywords, description]);
+
+        var $ = cheerio.load(body.toString())
+          , title = $('title').text()
+          , keywords = $('meta[name=keywords]').attr('content')
+          , description = $('meta[name=description]').attr('content')
+          , ret = mkCsvRowFromArray([pageUrl, title, keywords, description]);
 
         return callback(null, ret);
       } else {
-        return callback({'Error': 'Wrong statuscode: ' + response.statusCode}, null)
+        return callback(new Error('Wrong statuscode: ' + response.statusCode), null)
       }
     });
   }
