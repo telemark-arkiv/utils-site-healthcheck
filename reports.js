@@ -1,5 +1,9 @@
 var helpers = require('./helpers')
-  , validateHtml = require('html-validator');
+  , validateHtml = require('html-validator')
+  , validateWcag = require('wcag-validator')
+  , xml2js = require('xml2js')
+  , parser = new xml2js.Parser()
+  , acheckerID = 'insert-your-achecker-webserviceID-here';
 
 function mkCsvRowFromArray(arr){
   var a = arr.map(function(i){
@@ -122,16 +126,34 @@ module.exports = {
     stream.push(headers);
 
     for(var i=0;i < pagesLength; i++){
-      var page = pages[i]
-        , location = page.loc[0];
+      (function(){
+        var page = pages[i]
+          , location = page.loc[0]
+          , opts = {
+            uri : location,
+            id : acheckerID,
+            output : 'rest'
+          };
 
-      helpers.validateThisPageWcag(location, function(err, data){
-        if(err){
-          console.error(err);
-        } else {
-            stream.push(data);
-        }
-      });
+        validateWcag(opts, function(error, body){
+          if(error){
+            console.error(error, null);
+          } else {
+            parser.parseString(body.toString(), function (err, result) {
+              if (err) {
+                console.error(err, null);
+              } else {
+                if (result){
+                  var data = mkCsvRowFromArray([opts.uri, result.resultset.summary[0].NumOfErrors[0]]);
+                  stream.push(data);
+                } else {
+                  console.error(new Error('Something is wrong: ' + result));
+                }
+              }
+            });
+          }
+        });
+      })();
     }
   },
   mkReportPagespeed: function(pages, stream){
