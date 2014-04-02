@@ -2,6 +2,7 @@ var request = require('request')
   , cheerio = require('cheerio')
   , xml2js = require('xml2js')
   , parser = new xml2js.Parser()
+  , wcagValidator = require('wcag-validator')
   , acheckerID = 'insert-your-achecker-webserviceID-here'
   , pagespeedAPIKey = 'insert-your-google-APIkey-here';
 
@@ -103,11 +104,16 @@ module.exports = {
     });
   },
   validateThisPageWcag: function(pageUrl, callback){
-    var acheckerUrl = 'http://achecker.ca/checkacc.php?uri=' + pageUrl + '&id=' + acheckerID + '&output=rest';
 
-    request(acheckerUrl, function(error, response, body){
-      if(error){
-        return callback(error, null);
+    var opts = {
+          uri : pageUrl,
+          id : acheckerID,
+          output : 'rest'
+        };
+
+    wcagValidator(opts, function(err, body){
+      if(err){
+        return callback(err, null);
       } else {
         parser.parseString(body.toString(), function (err, result) {
           if (err) {
