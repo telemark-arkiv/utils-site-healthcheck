@@ -3,7 +3,6 @@ var request = require('request')
   , xml2js = require('xml2js')
   , parser = new xml2js.Parser()
   , wcagValidator = require('wcag-validator')
-  , acheckerID = 'insert-your-achecker-webserviceID-here'
   , pagespeedAPIKey = 'insert-your-google-APIkey-here';
 
 function daysBetween(date1, date2){
@@ -100,33 +99,6 @@ module.exports = {
         var thisUrl = response.request.uri.href
           , data = mkCsvRowFromArray([thisUrl, response.statusCode]);
         return callback(null, data);
-      }
-    });
-  },
-  validateThisPageWcag: function(pageUrl, callback){
-
-    var opts = {
-          uri : pageUrl,
-          id : acheckerID,
-          output : 'rest'
-        };
-
-    wcagValidator(opts, function(err, body){
-      if(err){
-        return callback(err, null);
-      } else {
-        parser.parseString(body.toString(), function (err, result) {
-          if (err) {
-            return callback(err, null);
-          } else {
-            if (result){
-              var ret = mkCsvRowFromArray([pageUrl, result.resultset.summary[0].NumOfErrors[0]]);
-              return callback(null, ret);
-            } else {
-              return callback(new Error('Something is wrong: ' + result), null)
-            }
-          }
-        });
       }
     });
   },
