@@ -112,16 +112,24 @@ These are the modules used in this app.
 
 ###request###
 Simplified HTTP request client.
-[NPM](https://www.npmjs.org/package/request) [GitHub](https://github.com/mikeal/request)
+[npm](https://www.npmjs.org/package/request) [GitHub](https://github.com/mikeal/request)
 
 ###xml2js###
 Simple XML to JavaScript object converter.
-[NPM](https://www.npmjs.org/package/xml2js) [GitHub](https://github.com/Leonidas-from-XIV/node-xml2js)
+[npm](https://www.npmjs.org/package/xml2js) [GitHub](https://github.com/Leonidas-from-XIV/node-xml2js)
 
 ###minimist###
 parse argument options
-[NPM](https://www.npmjs.org/package/minimist) [GitHub](https://github.com/substack/minimist)
+[npm](https://www.npmjs.org/package/minimist) [GitHub](https://github.com/substack/minimist)
 
 ###cheerio###
 Tiny, fast, and elegant implementation of core jQuery designed specifically for the server.
-[NPM](https://www.npmjs.org/package/cheerio) [GitHub](https://github.com/MatthewMueller/cheerio)
+[npm](https://www.npmjs.org/package/cheerio) [GitHub](https://github.com/MatthewMueller/cheerio)
+
+###html-validator###
+Validates html using validator.nu
+[npm](https://www.npmjs.org/package/html-validator) [GitHub](https://github.com/zrrrzzt/html-validator)
+
+###wcag-validator###
+Checks web accessibility for a webpage using achecker.ca
+[npm](https://www.npmjs.org/package/wcag-validator) [GitHub](https://github.com/zrrrzzt/wcag-validator)
