@@ -14,23 +14,14 @@ function mkCsvRowFromArray(arr){
 
 module.exports = {
 
-  mkReportFresh: function(pages, stream){
-    var pagesLength = pages.length
-      , headers = mkCsvRowFromArray(['location', 'last_modified']);
-
-    stream.push(headers);
-
-    for(var i=0;i < pagesLength; i++){
-      var page = pages[i];
-
-      helpers.getPageDaysSinceLastUpdate(page, function(err, data){
-        if(err){
-          console.error(err);
-        } else {
-          stream.push(data);
-        }
-      });
-    }
+  mkReportFresh: function(page){
+    helpers.getPageDaysSinceLastUpdate(page, function(err, data){
+      if(err){
+        console.error(err);
+      } else {
+        readStream.push(data);
+      }
+    });
   },
   mkReportLinks: function(pages, stream){
     var pagesLength = pages.length
