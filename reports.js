@@ -70,24 +70,14 @@ module.exports = {
       });
     }
   },
-  mkReportHealth: function(pages, stream){
-    var pagesLength = pages.length
-      , headers = mkCsvRowFromArray(['location', 'status_code']);
-
-    stream.push(headers);
-
-    for(var i=0;i < pagesLength; i++){
-      var page = pages[i]
-        , location = page.loc[0];
-
-      helpers.checkPageStatus(location, function(err, data){
-        if(err){
-          console.error(err);
-        } else {
-          stream.push(data);
-        }
-      })
-    }
+  mkReportHealth: function(element, callback){
+    helpers.checkPageStatus(element.loc[0], function(err, data){
+      if(err){
+        return callback(err, null);
+      } else {
+        return callback(null, data);
+      }
+    })
   },
   mkReportHtml: function(pages, stream){
     var pagesLength = pages.length

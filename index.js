@@ -30,7 +30,8 @@ if (sitemapUrl && report && fileName && validReport) {
         writeStream = fs.createWriteStream(fileName),
         readStream = stream.PassThrough(),
         thisReport = reports['mkReport' + report],
-        thisHeaders = mkCsvRowFromArray(headers[report]);
+        thisHeaders = mkCsvRowFromArray(headers[report]),
+        pageCount = 0;
 
       readStream.pipe(writeStream);
 
@@ -44,6 +45,8 @@ if (sitemapUrl && report && fileName && validReport) {
             console.log(err)
           } else {
             readStream.push(data);
+            pageCount++
+            console.log(pageCount);
           }
         });
       });
