@@ -38,7 +38,15 @@ if (sitemapUrl && report && fileName && validReport) {
 
       readStream.push(thisHeaders);
 
-      pages.forEach(thisReport);
+      pages.forEach(function(item){
+        thisReport(item, function(err, data){
+          if(err){
+            console.log(err)
+          } else {
+            readStream.push(data);
+          }
+        });
+      });
 
     }
   });

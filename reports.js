@@ -14,12 +14,12 @@ function mkCsvRowFromArray(arr){
 
 module.exports = {
 
-  mkReportFresh: function(page){
-    helpers.getPageDaysSinceLastUpdate(page, function(err, data){
+  mkReportFresh: function(element, callback){
+    helpers.getPageDaysSinceLastUpdate(element, function(err, data){
       if(err){
-        console.error(err);
+        return callback(err, null)
       } else {
-        readStream.push(data);
+        return callback(null, data);
       }
     });
   },
