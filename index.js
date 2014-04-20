@@ -2,12 +2,20 @@ var fs = require('fs')
   , stream = require('stream')
   , helpers = require('./helpers')
   , reports = require('./reports')
+  , headers = require('./headers')
   , argv = require('minimist')(process.argv.slice(2))
   , sitemapUrl = argv.url
   , report = argv.report
   , fileName = argv.filename || 'report.csv'
   , validReports = ['Fresh', 'Health', 'Links', 'Deadlinks', 'Html', 'Wcag', 'Pagespeed', 'Meta']
   , validReport = false;
+
+function mkCsvRowFromArray(arr){
+  var a = arr.map(function(i){
+    return '"' + i + '"'
+  });
+  return a.join(',') + '\r\n'
+}
 
 if(validReports.indexOf(report) > -1) {
   validReport = true;
@@ -21,13 +29,16 @@ if (sitemapUrl && report && fileName && validReport) {
       var
         writeStream = fs.createWriteStream(fileName),
         readStream = stream.PassThrough(),
-        thisReport = reports['mkReport' + report];
+        thisReport = reports['mkReport' + report],
+        thisHeaders = mkCsvRowFromArray(headers[report]);
 
       readStream.pipe(writeStream);
 
       console.log('Generates report type "' + report + '"');
 
-      thisReport(pages, readStream);
+      readStream.push(thisHeaders);
+
+      pages.forEach(thisReport);
 
     }
   });
