@@ -3,5 +3,6 @@ module.exports = {
   Health: ['location', 'status_code'],
   Html: ['location', 'status'],
   Meta: ['location', 'title', 'keywords', 'description'],
-  Pagespeed: ['location', 'score']
+  Pagespeed: ['location', 'score'],
+  Wcag: ['location', 'errors']
 }
