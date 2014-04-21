@@ -1,4 +1,5 @@
 module.exports = {
   Fresh: ['location', 'last_modified'],
-  Health: ['location', 'status_code']
+  Health: ['location', 'status_code'],
+  Html: ['location', 'status']
 }

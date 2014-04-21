@@ -79,26 +79,16 @@ module.exports = {
       }
     })
   },
-  mkReportHtml: function(pages, stream){
-    var pagesLength = pages.length
-      , headers = mkCsvRowFromArray(['location', 'status']);
-
-    stream.push(headers);
-
-    for(var i=0;i < pagesLength; i++){
-      var page = pages[i]
-        , location = page.loc[0];
-
-      validateHtml({url:location, format:'json'}, function(err, result){
-        if(err){
-          console.error(err);
-        } else {
-          var res = result.messages.length > 0 ? "Errors" : "Valid"
-            , data = mkCsvRowFromArray([result.url, res]);
-          stream.push(data);
-        }
-      });
-    }
+  mkReportHtml: function(element, callback){
+    validateHtml({url:element.loc[0], format:'json'}, function(err, result){
+      if(err){
+        return callback(err, null);
+      } else {
+        var res = result.messages.length > 0 ? "Errors" : "Valid"
+          , data = mkCsvRowFromArray([result.url, res]);
+        return callback(null, data);
+      }
+    });
   },
   mkReportWcag: function(pages, stream){
     var pagesLength = pages.length
