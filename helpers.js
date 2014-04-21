@@ -2,7 +2,6 @@ var request = require('request')
   , cheerio = require('cheerio')
   , xml2js = require('xml2js')
   , parser = new xml2js.Parser()
-  , wcagValidator = require('wcag-validator')
   , pagespeedAPIKey = 'insert-your-google-APIkey-here';
 
 function daysBetween(date1, date2){
