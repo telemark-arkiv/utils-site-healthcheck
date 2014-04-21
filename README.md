@@ -133,3 +133,7 @@ Validates html using validator.nu
 ###wcag-validator###
 Checks web accessibility for a webpage using achecker.ca
 [npm](https://www.npmjs.org/package/wcag-validator) [GitHub](https://github.com/zrrrzzt/wcag-validator)
+
+###gpagespeed###
+Analyze a webpage with Google PageSpeed
+[npm](https://www.npmjs.org/package/gpagespeed) [GitHub](https://github.com/zrrrzzt/gpagespeed)
