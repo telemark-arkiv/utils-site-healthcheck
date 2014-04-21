@@ -23,33 +23,22 @@ module.exports = {
       }
     });
   },
-  mkReportLinks: function(pages, stream){
-    var pagesLength = pages.length
-      , headers = mkCsvRowFromArray(['location', 'link']);
+  mkReportLinks: function(element, tracker, callback){
+    helpers.getPageLinks(element.loc[0], function(err, data){
+      if(err){
+        return callback(err, null);
+      } else {
 
-    stream.push(headers);
+        var linksLength = data.links.length;
 
-    for(var i=0;i < pagesLength; i++){
-      var page = pages[i]
-        , location = page.loc[0];
+        for(var i=0;i < linksLength; i++){
+          var link = data.links[i]
+            , ret = mkCsvRowFromArray([data.url, link]);
 
-      helpers.getPageLinks(location, function(err, data){
-        if(err){
-          console.error(err);
-        } else {
-
-          var linksLength = data.links.length;
-
-          for(var i=0;i < linksLength; i++){
-            var link = data.links[i]
-              , ret = mkCsvRowFromArray([data.url, link]);
-
-            stream.push(ret);
-          }
+          tracker.emit('row', ret);
         }
-      });
-
-    }
+      }
+    });
   },
   mkReportDeadlinks: function(pages, stream){
     var pagesLength = pages.length
