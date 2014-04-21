@@ -1,4 +1,6 @@
 var fs = require('fs')
+  , events = require('events')
+  , tracker = new events.EventEmitter()
   , stream = require('stream')
   , helpers = require('./helpers')
   , reports = require('./reports')
@@ -39,14 +41,18 @@ if (sitemapUrl && report && fileName && validReport) {
 
       readStream.push(thisHeaders);
 
+      tracker.on('row', function(row){
+        readStream.push(row);
+        pageCount++;
+        console.log(pageCount);
+      });
+
       pages.forEach(function(item){
-        thisReport(item, function(err, data){
+        thisReport(item, tracker, function(err){
           if(err){
-            console.log(err)
-          } else {
-            readStream.push(data);
-            pageCount++
-            console.log(pageCount);
+            console.log(err);
+            pageCount++;
+            console.log(pageCount)
           }
         });
       });

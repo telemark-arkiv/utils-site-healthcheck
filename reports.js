@@ -14,12 +14,12 @@ function mkCsvRowFromArray(arr){
 
 module.exports = {
 
-  mkReportFresh: function(element, callback){
+  mkReportFresh: function(element, tracker, callback){
     helpers.getPageDaysSinceLastUpdate(element, function(err, data){
       if(err){
         return callback(err, null)
       } else {
-        return callback(null, data);
+        tracker.emit('row', data);
       }
     });
   },
@@ -70,27 +70,27 @@ module.exports = {
       });
     }
   },
-  mkReportHealth: function(element, callback){
+  mkReportHealth: function(element, tracker, callback){
     helpers.checkPageStatus(element.loc[0], function(err, data){
       if(err){
         return callback(err, null);
       } else {
-        return callback(null, data);
+        tracker.emit('row', data);
       }
     })
   },
-  mkReportHtml: function(element, callback){
+  mkReportHtml: function(element, tracker, callback){
     validateHtml({url:element.loc[0], format:'json'}, function(err, result){
       if(err){
         return callback(err, null);
       } else {
         var res = result.messages.length > 0 ? "Errors" : "Valid"
           , data = mkCsvRowFromArray([result.url, res]);
-        return callback(null, data);
+        tracker.emit('row', data);
       }
     });
   },
-  mkReportWcag: function(element, callback){
+  mkReportWcag: function(element, tracker, callback){
     var opts = {
           uri : element.loc[0],
           id : acheckerID,
@@ -108,7 +108,7 @@ module.exports = {
           } else {
             if (result){
               var data = mkCsvRowFromArray([opts.uri, result.resultset.summary[0].NumOfErrors[0]]);
-              return callback(null, data);
+              tracker.emit('row', data);
             } else {
               return callback(new Error('Something is wrong: ' + result), null);
             }
@@ -117,21 +117,21 @@ module.exports = {
       }
     });
   },
-  mkReportPagespeed: function(element, callback){
+  mkReportPagespeed: function(element, tracker, callback){
     helpers.getPagespeedReport(element.loc[0], function(err, data){
       if(err){
         return callback(err, null);
       } else {
-        return callback(null, data);
+        tracker.emit('row', data);
       }
     });
   },
-  mkReportMeta: function(element, callback) {
+  mkReportMeta: function(element, tracker, callback) {
     helpers.getPageMetadata(element.loc[0], function (err, data) {
       if (err) {
         return callback(err, null);
       } else {
-        return callback(null, data);
+        tracker.emit('row', data);
       }
     });
   }
