@@ -76,7 +76,7 @@ module.exports = {
       }
     });
   },
-  checkPageLinks: function(pageUrl, stream, links){
+  checkPageLinks: function(pageUrl, tracker, links){
     var linksLength = links.length;
 
     for(var i=0;i < linksLength; i++){
@@ -84,9 +84,9 @@ module.exports = {
 
       checkLink(pageUrl, link, function(err, data){
         if(err){
-          stream.push(data);
+          tracker.emit('row', data);
         } else {
-          stream.push(data);
+          tracker.emit('row', data);
         }
       });
     }
