@@ -2,7 +2,7 @@ var request = require('request')
   , cheerio = require('cheerio')
   , xml2js = require('xml2js')
   , parser = new xml2js.Parser()
-  , pagespeedAPIKey = 'insert-your-google-APIkey-here';
+  ;
 
 function daysBetween(date1, date2){
   return Math.floor((date1 - date2)/(1000 * 60 * 60 * 24));
@@ -98,23 +98,6 @@ module.exports = {
         var thisUrl = response.request.uri.href
           , data = mkCsvRowFromArray([thisUrl, response.statusCode]);
         return callback(null, data);
-      }
-    });
-  },
-  getPagespeedReport: function(pageUrl, callback){
-    var pagespeedUrl = 'https://www.googleapis.com/pagespeedonline/v1/runPagespeed?url='+ pageUrl + '&key=' + pagespeedAPIKey;
-
-    request(pagespeedUrl, function(error, response, body){
-      if(error){
-        return callback(error, null);
-      } else {
-        var result = JSON.parse(body.toString());
-        if(result.score){
-          var ret = mkCsvRowFromArray([pageUrl, result.score]);
-          return callback(null, ret);
-        } else {
-          return callback(new Error('Something is wrong: ' + result), null);
-        }
       }
     });
   },
