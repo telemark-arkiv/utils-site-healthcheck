@@ -1,9 +1,12 @@
 var helpers = require('./helpers')
   , validateHtml = require('html-validator')
   , validateWcag = require('wcag-validator')
+  , pagespeed = require('gpagespeed')
   , xml2js = require('xml2js')
   , parser = new xml2js.Parser()
-  , acheckerID = 'insert-your-achecker-webserviceID-here';
+  , acheckerID = 'insert-your-achecker-webserviceID-here'
+  , pagespeedAPIKey = 'insert-your-google-APIkey-here'
+  ;
 
 function mkCsvRowFromArray(arr){
   var a = arr.map(function(i){
@@ -97,13 +100,22 @@ module.exports = {
     });
   },
   mkReportPagespeed: function(element, tracker, callback){
-    helpers.getPagespeedReport(element.loc[0], function(err, data){
+    var opts = {url : element.loc[0], key : pagespeedAPIKey};
+
+    pagespeed(opts, function(err, data){
       if(err){
-        return callback(err, null);
+        return callback(err);
       } else {
-        tracker.emit('row', data);
+        var result = JSON.parse(data);
+        if(result.score){
+          var ret = mkCsvRowFromArray([opts.url, result.score]);
+          tracker.emit('row', ret);
+        } else {
+          return callback(new Error('Something is wrong: ' + result));
+        }
       }
     });
+
   },
   mkReportMeta: function(element, tracker, callback) {
     helpers.getPageMetadata(element.loc[0], function (err, data) {
