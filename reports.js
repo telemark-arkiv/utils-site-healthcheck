@@ -73,12 +73,7 @@ module.exports = {
     });
   },
   mkReportWcag: function(element, tracker, callback){
-    var opts = {
-          uri : element.loc[0],
-          id : acheckerID,
-          output : 'rest'
-        }
-      ;
+    var opts = {uri: element.loc[0], id: acheckerID, output: 'rest'};
 
     validateWcag(opts, function(error, body){
       if(error){
