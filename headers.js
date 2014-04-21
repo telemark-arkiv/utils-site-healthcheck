@@ -1,4 +1,5 @@
 module.exports = {
+  Deadlinks: ['location', 'link', 'status_code'],
   Fresh: ['location', 'last_modified'],
   Health: ['location', 'status_code'],
   Html: ['location', 'status'],
