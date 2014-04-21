@@ -146,23 +146,13 @@ module.exports = {
       });
     }
   },
-  mkReportMeta: function(pages, stream){
-    var pagesLength = pages.length
-      , headers = mkCsvRowFromArray(['location', 'title', 'keywords', 'description']);
-
-    stream.push(headers);
-
-    for(var i=0;i < pagesLength; i++){
-      var page = pages[i]
-        , location = page.loc[0];
-
-      helpers.getPageMetadata(location, function(err, data){
-        if(err){
-          console.error(err);
-        } else {
-          stream.push(data);
-        }
-      });
-    }
+  mkReportMeta: function(element, callback) {
+    helpers.getPageMetadata(element.loc[0], function (err, data) {
+      if (err) {
+        return callback(err, null);
+      } else {
+        return callback(null, data);
+      }
+    });
   }
 };
