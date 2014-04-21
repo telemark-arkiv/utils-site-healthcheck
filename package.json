@@ -20,6 +20,7 @@
     "minimist": "0.0.8",
     "cheerio": "^0.14.0",
     "html-validator": "0.0.4",
-    "wcag-validator": "0.0.1"
+    "wcag-validator": "0.0.1",
+    "gpagespeed": "0.0.4"
   }
 }
