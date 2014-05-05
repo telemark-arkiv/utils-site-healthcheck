@@ -36,7 +36,7 @@ module.exports = {
 
         for(var i=0;i < linksLength; i++){
           var link = data.links[i]
-            , ret = mkCsvRowFromArray([data.url, link]);
+            , ret = [data.url, link];
 
           tracker.emit('row', ret);
         }
@@ -67,7 +67,7 @@ module.exports = {
         return callback(err, null);
       } else {
         var res = result.messages.length > 0 ? "Errors" : "Valid"
-          , data = mkCsvRowFromArray([result.url, res]);
+          , data = [result.url, res];
         tracker.emit('row', data);
       }
     });
@@ -84,7 +84,7 @@ module.exports = {
             return callback(err, null);
           } else {
             if (result){
-              var data = mkCsvRowFromArray([opts.uri, result.resultset.summary[0].NumOfErrors[0]]);
+              var data = [opts.uri, result.resultset.summary[0].NumOfErrors[0]];
               tracker.emit('row', data);
             } else {
               return callback(new Error('Something is wrong: ' + result), null);
@@ -103,7 +103,7 @@ module.exports = {
       } else {
         var result = JSON.parse(data);
         if(result.score){
-          var ret = mkCsvRowFromArray([opts.url, result.score]);
+          var ret = [opts.url, result.score];
           tracker.emit('row', ret);
         } else {
           return callback(new Error('Something is wrong: ' + result));
