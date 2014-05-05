@@ -8,7 +8,6 @@ var helpers = require('./helpers')
   , pagespeedAPIKey = 'insert-your-google-APIkey-here'
   ;
 
-
 module.exports = {
 
   mkReportFresh: function(element, tracker, callback){
