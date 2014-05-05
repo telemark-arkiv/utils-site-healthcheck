@@ -10,17 +10,13 @@ var fs = require('fs')
   , report = argv.report
   , fileName = argv.filename || 'report.csv'
   , validReports = ['Fresh', 'Health', 'Links', 'Deadlinks', 'Html', 'Wcag', 'Pagespeed', 'Meta']
-  , validReport = false;
+  , validReport = validReports.indexOf(report) > -1 ? true:false;
 
 function mkCsvRowFromArray(arr){
   var a = arr.map(function(i){
     return '"' + i + '"'
   });
   return a.join(',') + '\r\n'
-}
-
-if(validReports.indexOf(report) > -1) {
-  validReport = true;
 }
 
 if (sitemapUrl && report && fileName && validReport) {
