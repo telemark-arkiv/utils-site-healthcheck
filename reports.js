@@ -8,12 +8,6 @@ var helpers = require('./helpers')
   , pagespeedAPIKey = 'insert-your-google-APIkey-here'
   ;
 
-function mkCsvRowFromArray(arr){
-  var a = arr.map(function(i){
-        return '"' + i + '"'
-      });
-  return a.join(',') + '\r\n'
-}
 
 module.exports = {
 
