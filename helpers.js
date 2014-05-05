@@ -16,7 +16,7 @@ function checkLink(pageUrl, linkUrl, callback){
       return callback(error, ret);
     }
     if (!error && response.statusCode != 200) {
-      var ret = mkCsvRowFromArray([pageUrl, linkUrl, response.statusCode]);
+      var ret = [pageUrl, linkUrl, response.statusCode];
       return callback (null, ret);
     }
   });
@@ -51,7 +51,7 @@ module.exports = {
       , pageModified = new Date(page.lastmod[0])
       , location = page.loc[0]
       , last_modified = daysBetween(today, pageModified)
-      , ret = mkCsvRowFromArray([location, last_modified]);
+      , ret = [location, last_modified];
 
     return callback(null, ret);
   },
@@ -96,7 +96,7 @@ module.exports = {
         return callback(error, null);
       } else {
         var thisUrl = response.request.uri.href
-          , data = mkCsvRowFromArray([thisUrl, response.statusCode]);
+          , data = [thisUrl, response.statusCode];
         return callback(null, data);
       }
     });
@@ -112,7 +112,7 @@ module.exports = {
           , title = $('title').text()
           , keywords = $('meta[name=keywords]').attr('content')
           , description = $('meta[name=description]').attr('content')
-          , ret = mkCsvRowFromArray([pageUrl, title, keywords, description]);
+          , ret = [pageUrl, title, keywords, description];
 
         return callback(null, ret);
       } else {
