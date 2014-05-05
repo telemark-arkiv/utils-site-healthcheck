@@ -42,7 +42,7 @@ if (sitemapUrl && report && fileName && validReport) {
       readStream.push(thisHeaders);
 
       tracker.on('row', function(row){
-        readStream.push(row);
+        readStream.push(mkCsvRowFromArray(row));
         pageCount++;
         console.log(pageCount);
       });
