@@ -22,13 +22,6 @@ function checkLink(pageUrl, linkUrl, callback){
   });
 }
 
-function mkCsvRowFromArray(arr){
-  var a = arr.map(function(i){
-        return '"' + i + '"'
-      });
-  return a.join(',') + '\r\n'
-}
-
 module.exports = {
   getPages: function(urlToSitemap, callback){
     request(urlToSitemap, function(error, response, body){
