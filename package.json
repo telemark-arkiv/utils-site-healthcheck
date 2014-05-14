@@ -1,7 +1,7 @@
 {
   "name": "utils-site-healthcheck",
   "private": true,
-  "version": "0.1.6",
+  "version": "0.1.7",
   "author": {
     "name": "Geir Gåsodden",
     "email": "geir.gasodden@pythonia.no"
