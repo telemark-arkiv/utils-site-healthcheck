@@ -1,4 +1,4 @@
-#Site Healthcheck#
+#Site Healthcheck
 
 A small CLI-tool for maintaining a healthy website.
 
@@ -6,7 +6,7 @@ The idea is to run different checks on your website and generate a report.
 
 Your site's sitemap.xml is the base of all reports.
 
-##How to install##
+##How to install
 
 Clone the repo
 
@@ -26,7 +26,7 @@ Install the dependencies
 $ npm install
 ```
 
-##Usage##
+##Usage
 
 Open your terminal and cd to the directory were this app is located.
 
@@ -38,39 +38,39 @@ $ node index.js --url=url-to-sitemap --report=name-of-report-type --filename=fil
 
 --url needs to be complete with http:// and everything
 
-##Reports##
+##Reports
 
 Collection of reports
 
-###Freshness###
+###Freshness
 ```
 --report=Fresh
 ```
 
 Generates a report with location of page and the number of days since it's last update.
 
-###Health###
+###Health
 ```
 --report=Health
 ```
 
-Generates a report with location of page and it's status code.
+Generates a report with location of page, it's status code and loadtime in milliseconds.
 
-###Links###
+###Links
 ```
 --report=Links
 ```
 
 Generates a report with location of pages and links on that page.
 
-###Dead links###
+###Dead links
 ```
 --report=Deadlinks
 ```
 
 Generates a report with location of page, the url with error and it's status code.
 
-###HTML###
+###HTML
 ```
 --report=Html
 ```
@@ -78,7 +78,7 @@ Generates a report with location of page, the url with error and it's status cod
 Checks each page against the validator at [html5.validator.nu](http://html5.validator.nu).
 Generates a report with location of page and either "Valid" or "Errors".
 
-###WCAG###
+###WCAG
 ```
 --report=Wcag
 ```
@@ -88,7 +88,7 @@ You can register for free at [http://achecker.ca/](http://achecker.ca/)
 
 The report will return location of page and number of error from validation towards WCAG 2.0 Level AA.
 
-###Pagespeed###
+###Pagespeed
 ```
 --report=Pagespeed
 ```
@@ -98,7 +98,7 @@ You'll need to turn on the PageSpeed Insights API
 
 The report will return location of page and the PageSpeed-score from Google.
 
-###Metadata###
+###Metadata
 ```
 --report=Meta
 ```
@@ -106,38 +106,38 @@ The report will return location of page and the PageSpeed-score from Google.
 Collects title, meta description and meta keywords from every page.
 The report returns a row with url for page, title, keywords and description i separate columns.
 
-##Dependencies##
+##Dependencies
 
-These are the modules used in this app.
+These are the external modules used in this app.
 
-###request###
-Simplified HTTP request client.
-[npm](https://www.npmjs.org/package/request) [GitHub](https://github.com/mikeal/request)
-
-###xml2js###
-Simple XML to JavaScript object converter.
-[npm](https://www.npmjs.org/package/xml2js) [GitHub](https://github.com/Leonidas-from-XIV/node-xml2js)
-
-###minimist###
-parse argument options
-[npm](https://www.npmjs.org/package/minimist) [GitHub](https://github.com/substack/minimist)
-
-###cheerio###
+###cheerio
 Tiny, fast, and elegant implementation of core jQuery designed specifically for the server.
 [npm](https://www.npmjs.org/package/cheerio) [GitHub](https://github.com/MatthewMueller/cheerio)
 
-###html-validator###
+###html-validator
 Validates html using validator.nu
 [npm](https://www.npmjs.org/package/html-validator) [GitHub](https://github.com/zrrrzzt/html-validator)
 
-###wcag-validator###
-Checks web accessibility for a webpage using achecker.ca
-[npm](https://www.npmjs.org/package/wcag-validator) [GitHub](https://github.com/zrrrzzt/wcag-validator)
-
-###gpagespeed###
+###gpagespeed
 Analyze a webpage with Google PageSpeed
 [npm](https://www.npmjs.org/package/gpagespeed) [GitHub](https://github.com/zrrrzzt/gpagespeed)
 
-###pagelt###
+###minimist
+parse argument options
+[npm](https://www.npmjs.org/package/minimist) [GitHub](https://github.com/substack/minimist)
+
+###pagelt
 Measure loadtime for a webpage
 [npm](https://www.npmjs.org/package/pagelt) [GitHub](https://github.com/zrrrzzt/pagelt)
+
+###request
+Simplified HTTP request client.
+[npm](https://www.npmjs.org/package/request) [GitHub](https://github.com/mikeal/request)
+
+###wcag-validator
+Checks web accessibility for a webpage using achecker.ca
+[npm](https://www.npmjs.org/package/wcag-validator) [GitHub](https://github.com/zrrrzzt/wcag-validator)
+
+###xml2js
+Simple XML to JavaScript object converter.
+[npm](https://www.npmjs.org/package/xml2js) [GitHub](https://github.com/Leonidas-from-XIV/node-xml2js)
