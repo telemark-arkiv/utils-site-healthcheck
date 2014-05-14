@@ -137,3 +137,7 @@ Checks web accessibility for a webpage using achecker.ca
 ###gpagespeed###
 Analyze a webpage with Google PageSpeed
 [npm](https://www.npmjs.org/package/gpagespeed) [GitHub](https://github.com/zrrrzzt/gpagespeed)
+
+###pagelt###
+Measure loadtime for a webpage
+[npm](https://www.npmjs.org/package/pagelt) [GitHub](https://github.com/zrrrzzt/pagelt)
