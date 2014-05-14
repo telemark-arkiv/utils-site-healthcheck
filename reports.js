@@ -2,6 +2,7 @@ var helpers = require('./helpers')
   , validateHtml = require('html-validator')
   , validateWcag = require('wcag-validator')
   , pagespeed = require('gpagespeed')
+  , plt = require('pagelt')
   , xml2js = require('xml2js')
   , parser = new xml2js.Parser()
   , acheckerID = 'insert-your-achecker-webserviceID-here'
@@ -46,13 +47,13 @@ module.exports = {
     });
   },
   mkReportHealth: function(element, tracker, callback){
-    helpers.checkPageStatus(element.loc[0], function(err, data){
+    plt(element.loc[0], function(err, data){
       if(err){
         return callback(err, null);
-      } else {
-        tracker.emit('row', data);
       }
-    })
+      var data = [element.loc[0], data.status, data.ms];
+      tracker.emit('row', data);
+    });
   },
   mkReportHtml: function(element, tracker, callback){
     validateHtml({url:element.loc[0], format:'json'}, function(err, result){
