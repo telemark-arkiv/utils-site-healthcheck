@@ -21,6 +21,6 @@
     "cheerio": "^0.14.0",
     "html-validator": "0.0.4",
     "wcag-validator": "0.0.2",
-    "gpagespeed": "0.0.4"
+    "gpagespeed": "0.0.5"
   }
 }
