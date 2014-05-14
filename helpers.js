@@ -83,17 +83,6 @@ module.exports = {
       });
     }
   },
-  checkPageStatus: function(pageUrl, callback){
-    request(pageUrl, function(error, response, body){
-      if (error) {
-        return callback(error, null);
-      } else {
-        var thisUrl = response.request.uri.href
-          , data = [thisUrl, response.statusCode];
-        return callback(null, data);
-      }
-    });
-  },
   getPageMetadata: function(pageUrl, callback) {
     request(pageUrl, function(error, response, body){
       if (error) {
