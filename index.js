@@ -50,8 +50,8 @@ if(argv.filename){
   opts.filename = argv.filename;
 }
 
-generator(opts, err){
-  if(err){
-    throw err;
-  }
-}
+generator(opts, function(err){
+    if(err){
+      throw err;
+    }
+});
