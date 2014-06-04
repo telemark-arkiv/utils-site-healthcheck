@@ -2,7 +2,7 @@
   "name": "utils-site-healthcheck",
   "description": "Collection of website reporting tools",
   "private": true,
-  "version": "0.1.3",
+  "version": "0.2.0",
   "author": {
     "name": "Geir Gåsodden",
     "email": "geir.gasodden@pythonia.no",
