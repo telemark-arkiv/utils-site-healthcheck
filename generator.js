@@ -49,5 +49,9 @@ module.exports = function generateReport(opts, callback){
     return callback(new Error('Invalid url'), null);
   }
 
+  if(!opts.report){
+    return callback(new Error('Missing required param: report'), null);
+  }
+
   return callback(null, {});
 };
