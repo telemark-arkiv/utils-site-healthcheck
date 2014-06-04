@@ -8,7 +8,7 @@ var fs = require('fs')
   , fileName = argv.filename || 'report.csv'
   , validReports = ['Fresh', 'Health', 'Links', 'Deadlinks', 'Html', 'Wcag', 'Pagespeed', 'Meta']
   , validReport = false;
-
+/*
 if(validReports.indexOf(report) > -1) {
   validReport = true;
 }
@@ -37,7 +37,7 @@ if (sitemapUrl && report && fileName && validReport) {
   console.log('node index.js --url=url-to-parse --report=type-of-report --filename=filename-to-save');
   console.log('Valid report types: ' + validReports.join(', '));
 }
-
+*/
 module.exports = function generateReport(opts, callback){
   return callback(null, {});
 };

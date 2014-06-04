@@ -24,12 +24,12 @@
     "url": "http://github.com/telemark/utils-site-healthcheck/issues"
   },
   "dependencies": {
-    "request": "^2.34.0",
-    "xml2js": "^0.4.2",
-    "minimist": "0.0.8",
     "cheerio": "^0.14.0",
     "html-validator": "0.0.4",
-    "wcag-validator": "0.0.1"
+    "minimist": "0.0.8",
+    "request": "^2.34.0",
+    "wcag-validator": "0.0.2",
+    "xml2js": "^0.4.2"
   },
   "devDependencies": {
     "mocha": "^1.20.1"
