@@ -83,4 +83,23 @@ describe('Generator - inputs', function(){
 
   });
 
+  it('Should throw if opts.filename is not supplied', function(done){
+
+    var opts = {url:'http://www.npmjs.org', report:'Html'};
+
+    generator(opts, function(err, data){
+      assert.throws(function(){
+          if(err) throw err;
+        }, function(err){
+          if((err instanceof Error) && /Missing required param: filename/.test(err)){
+            return true
+          }
+        },
+        "Unexpected error"
+      );
+      done();
+    });
+
+  });
+
 });
