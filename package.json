@@ -24,7 +24,7 @@
     "url": "http://github.com/telemark/utils-site-healthcheck/issues"
   },
   "dependencies": {
-    "cheerio": "^0.14.0",
+    "cheerio": "^0.16.0",
     "html-validator": "0.0.4",
     "minimist": "0.0.8",
     "request": "^2.34.0",
