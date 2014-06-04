@@ -64,4 +64,23 @@ describe('Generator - inputs', function(){
 
   });
 
+  it('Should throw if opts.report is not valid type', function(done){
+
+    var opts = {url:'http://www.npmjs.org', report:'snooker'};
+
+    generator(opts, function(err, data){
+      assert.throws(function(){
+          if(err) throw err;
+        }, function(err){
+          if((err instanceof Error) && /Invalid report type/.test(err)){
+            return true
+          }
+        },
+        "Unexpected error"
+      );
+      done();
+    });
+
+  });
+
 });
