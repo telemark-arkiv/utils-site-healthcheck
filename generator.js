@@ -39,7 +39,7 @@ module.exports = function generateReport(opts, callback){
 
       readStream.pipe(writeStream);
 
-      console.log('Generates report type "' + report + '"');
+      console.log('Generates report type "' + opts.report + '"');
 
       thisReport(pages, readStream);
 
