@@ -57,5 +57,9 @@ module.exports = function generateReport(opts, callback){
     return callback(new Error('Invalid report type'), null);
   }
 
+  if(!opts.filename){
+    return callback(new Error('Missing required param: filename'), null);
+  }
+
   return callback(null, {});
 };
