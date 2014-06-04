@@ -33,7 +33,7 @@ Open your terminal and cd to the directory were this app is located.
 Run this command with your settings
 
 ```
-$ node index.js --url=url-to-sitemap --report=name-of-report-type --filename=filname-to-use.csv
+$ node generator.js --url=url-to-sitemap --report=name-of-report-type --filename=filname-to-use.csv
 ```
 
 --url needs to be complete with http:// and everything

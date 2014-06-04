@@ -9,6 +9,13 @@
     "url": "https://github.com/zrrrzzt"
   },
   "main": "index.js",
+  "scripts": {
+    "start" : "node cli ./",
+    "test": "mocha --reporter spec test/*.js"
+  },
+  "engines": {
+    "node": ">=0.10.0"
+  },
   "repository": {
     "type": "git",
     "url": "http://github.com/telemark/utils-site-healthcheck.git"
