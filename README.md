@@ -33,10 +33,16 @@ Open your terminal and cd to the directory were this app is located.
 Run this command with your settings
 
 ```
-$ node generator.js --url=url-to-sitemap --report=name-of-report-type --filename=filname-to-use.csv
+$ node index.js <url-to-sitemap> --report=<report>
 ```
 
---url needs to be complete with http:// and everything
+<url-to-sitemap> needs to be complete with http:// and everything
+
+Optionally pass in filename for report (defaults to report.csv)
+
+```
+$ node index.js <url-to-sitemap> --report=<report> --filename=<filename>
+```
 
 ##Reports##
 
@@ -129,6 +135,10 @@ Tiny, fast, and elegant implementation of core jQuery designed specifically for 
 ###html-validator###
 Validates html using validator.nu
 [npm](https://www.npmjs.org/package/html-validator) [GitHub](https://github.com/zrrrzzt/html-validator)
+
+###valid-url###
+URI validation functions
+[npm](https://www.npmjs.org/package/valid-url) [GitHub](https://github.com/ogt/valid-url)
 
 ###wcag-validator###
 Checks web accessibility for a webpage using achecker.ca
