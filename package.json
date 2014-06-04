@@ -25,8 +25,10 @@
   },
   "dependencies": {
     "cheerio": "^0.16.0",
+    "gpagespeed": "0.0.6",
     "html-validator": "0.0.4",
     "minimist": "^0.1.0",
+    "pagelt": "0.0.1",
     "request": "^2.36.0",
     "valid-url": "^1.0.9",
     "wcag-validator": "0.0.2",

@@ -1,10 +1,20 @@
 var fs = require('fs')
+  , events = require('events')
+  , tracker = new events.EventEmitter()
   , stream = require('stream')
   , validUrl = require('valid-url')
   , helpers = require('./helpers')
+  , headers = require('./headers')
   , reports = require('./reports')
   , validReports = ['Fresh', 'Health', 'Links', 'Deadlinks', 'Html', 'Wcag', 'Pagespeed', 'Meta']
   ;
+
+function mkCsvRowFromArray(arr){
+  var a = arr.map(function(i){
+    return '"' + i + '"';
+  });
+  return a.join(',') + '\r\n';
+}
 
 module.exports = function generateReport(opts, callback){
 
@@ -35,13 +45,31 @@ module.exports = function generateReport(opts, callback){
       var
         writeStream = fs.createWriteStream(opts.filename),
         readStream = stream.PassThrough(),
-        thisReport = reports['mkReport' + opts.report];
+        thisReport = reports['mkReport' + opts.report],
+        thisHeaders = mkCsvRowFromArray(headers[opts.report]),
+        pageCount = 0;
 
       readStream.pipe(writeStream);
 
       console.log('Generates report type "' + opts.report + '"');
 
-      thisReport(pages, readStream);
+      readStream.push(thisHeaders);
+
+      tracker.on('row', function(row){
+        readStream.push(mkCsvRowFromArray(row));
+        pageCount++;
+        console.log(pageCount);
+      });
+
+      pages.forEach(function(item){
+        thisReport(item, tracker, function(err){
+          if(err){
+            console.error(err);
+            pageCount++;
+            console.log(pageCount);
+          }
+        });
+      });
 
     }
   });
