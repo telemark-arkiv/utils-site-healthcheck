@@ -1,197 +1,118 @@
 var helpers = require('./helpers')
   , validateHtml = require('html-validator')
   , validateWcag = require('wcag-validator')
+  , pagespeed = require('gpagespeed')
+  , plt = require('pagelt')
   , xml2js = require('xml2js')
   , parser = new xml2js.Parser()
-  , acheckerID = 'insert-your-achecker-webserviceID-here';
-
-function mkCsvRowFromArray(arr){
-  var a = arr.map(function(i){
-        return '"' + i + '"'
-      });
-  return a.join(',') + '\r\n'
-}
+  , acheckerID = 'insert-your-achecker-webserviceID-here'
+  , pagespeedAPIKey = 'insert-your-google-APIkey-here'
+  ;
 
 module.exports = {
 
-  mkReportFresh: function(pages, stream){
-    var pagesLength = pages.length
-      , headers = mkCsvRowFromArray(['location', 'last_modified']);
-
-    stream.push(headers);
-
-    for(var i=0;i < pagesLength; i++){
-      var page = pages[i];
-
-      helpers.getPageDaysSinceLastUpdate(page, function(err, data){
-        if(err){
-          console.error(err);
-        } else {
-          stream.push(data);
-        }
-      });
-    }
+  mkReportFresh: function(element, tracker, callback){
+    helpers.getPageDaysSinceLastUpdate(element, function(err, data){
+      if(err){
+        return callback(err, null)
+      } else {
+        tracker.emit('row', data);
+      }
+    });
   },
-  mkReportLinks: function(pages, stream){
-    var pagesLength = pages.length
-      , headers = mkCsvRowFromArray(['location', 'link']);
+  mkReportLinks: function(element, tracker, callback){
+    helpers.getPageLinks(element.loc[0], function(err, data){
+      if(err){
+        return callback(err, null);
+      } else {
 
-    stream.push(headers);
+        var linksLength = data.links.length;
 
-    for(var i=0;i < pagesLength; i++){
-      var page = pages[i]
-        , location = page.loc[0];
+        for(var i=0;i < linksLength; i++){
+          var link = data.links[i]
+            , ret = [data.url, link];
 
-      helpers.getPageLinks(location, function(err, data){
-        if(err){
-          console.error(err);
-        } else {
-
-          var linksLength = data.links.length;
-
-          for(var i=0;i < linksLength; i++){
-            var link = data.links[i]
-              , ret = mkCsvRowFromArray([data.url, link]);
-
-            stream.push(ret);
-          }
+          tracker.emit('row', ret);
         }
-      });
-
-    }
+      }
+    });
   },
-  mkReportDeadlinks: function(pages, stream){
-    var pagesLength = pages.length
-      , headers = mkCsvRowFromArray(['location', 'link', 'status_code']);
-
-    stream.push(headers);
-
-    for(var i=0;i < pagesLength; i++){
-      var page = pages[i]
-        , location = page.loc[0];
-
-      helpers.getPageLinks(location, function(err, data){
-        if(err){
-          console.error(err);
-        } else {
-          helpers.checkPageLinks(data.url, stream, data.links);
-        }
-      });
-    }
+  mkReportDeadlinks: function(element, tracker, callback){
+    helpers.getPageLinks(element.loc[0], function(err, data){
+      if(err){
+        return callback(err, null);
+      } else {
+        helpers.checkPageLinks(data.url, tracker, data.links);
+      }
+    });
   },
-  mkReportHealth: function(pages, stream){
-    var pagesLength = pages.length
-      , headers = mkCsvRowFromArray(['location', 'status_code']);
-
-    stream.push(headers);
-
-    for(var i=0;i < pagesLength; i++){
-      var page = pages[i]
-        , location = page.loc[0];
-
-      helpers.checkPageStatus(location, function(err, data){
-        if(err){
-          console.error(err);
-        } else {
-          stream.push(data);
-        }
-      })
-    }
+  mkReportHealth: function(element, tracker, callback){
+    plt(element.loc[0], function(err, data){
+      if(err){
+        return callback(err, null);
+      }
+      var data = [element.loc[0], data.status, data.ms];
+      tracker.emit('row', data);
+    });
   },
-  mkReportHtml: function(pages, stream){
-    var pagesLength = pages.length
-      , headers = mkCsvRowFromArray(['location', 'status']);
-
-    stream.push(headers);
-
-    for(var i=0;i < pagesLength; i++){
-      var page = pages[i]
-        , location = page.loc[0];
-
-      validateHtml({url:location, format:'json'}, function(err, result){
-        if(err){
-          console.error(err);
-        } else {
-          var res = result.messages.length > 0 ? "Errors" : "Valid"
-            , data = mkCsvRowFromArray([result.url, res]);
-          stream.push(data);
-        }
-      });
-    }
+  mkReportHtml: function(element, tracker, callback){
+    validateHtml({url:element.loc[0], format:'json'}, function(err, result){
+      if(err){
+        return callback(err, null);
+      } else {
+        var res = result.messages.length > 0 ? "Errors" : "Valid"
+          , data = [result.url, res];
+        tracker.emit('row', data);
+      }
+    });
   },
-  mkReportWcag: function(pages, stream){
-    var pagesLength = pages.length
-      , headers = mkCsvRowFromArray(['location', 'errors']);
+  mkReportWcag: function(element, tracker, callback){
+    var opts = {uri: element.loc[0], id: acheckerID, output: 'rest'};
 
-    stream.push(headers);
-
-    for(var i=0;i < pagesLength; i++){
-      (function(){
-        var page = pages[i]
-          , location = page.loc[0]
-          , opts = {
-            uri : location,
-            id : acheckerID,
-            output : 'rest'
-          };
-
-        validateWcag(opts, function(error, body){
-          if(error){
-            console.error(error, null);
+    validateWcag(opts, function(error, body){
+      if(error){
+        return callback(error, null);
+      } else {
+        parser.parseString(body.toString(), function (err, result) {
+          if (err) {
+            return callback(err, null);
           } else {
-            parser.parseString(body.toString(), function (err, result) {
-              if (err) {
-                console.error(err, null);
-              } else {
-                if (result){
-                  var data = mkCsvRowFromArray([opts.uri, result.resultset.summary[0].NumOfErrors[0]]);
-                  stream.push(data);
-                } else {
-                  console.error(new Error('Something is wrong: ' + result));
-                }
-              }
-            });
+            if (result){
+              var data = [opts.uri, result.resultset.summary[0].NumOfErrors[0]];
+              tracker.emit('row', data);
+            } else {
+              return callback(new Error('Something is wrong: ' + result), null);
+            }
           }
         });
-      })();
-    }
+      }
+    });
   },
-  mkReportPagespeed: function(pages, stream){
-    var pagesLength = pages.length
-      , headers = mkCsvRowFromArray(['location', 'score']);
+  mkReportPagespeed: function(element, tracker, callback){
+    var opts = {url : element.loc[0], key : pagespeedAPIKey};
 
-    stream.push(headers);
-
-    for(var i=0;i < pagesLength; i++){
-      var page = pages[i]
-        , location = page.loc[0];
-
-      helpers.getPagespeedReport(location, function(err, data){
-        if(err){
-          console.error(err);
+    pagespeed(opts, function(err, data){
+      if(err){
+        return callback(err);
+      } else {
+        var result = JSON.parse(data);
+        if(result.score){
+          var ret = [opts.url, result.score];
+          tracker.emit('row', ret);
         } else {
-          stream.push(data);
+          return callback(new Error('Something is wrong: ' + result));
         }
-      });
-    }
+      }
+    });
+
   },
-  mkReportMeta: function(pages, stream){
-    var pagesLength = pages.length
-      , headers = mkCsvRowFromArray(['location', 'title', 'keywords', 'description']);
-
-    stream.push(headers);
-
-    for(var i=0;i < pagesLength; i++){
-      var page = pages[i]
-        , location = page.loc[0];
-
-      helpers.getPageMetadata(location, function(err, data){
-        if(err){
-          console.error(err);
-        } else {
-          stream.push(data);
-        }
-      });
-    }
+  mkReportMeta: function(element, tracker, callback) {
+    helpers.getPageMetadata(element.loc[0], function (err, data) {
+      if (err) {
+        return callback(err, null);
+      } else {
+        tracker.emit('row', data);
+      }
+    });
   }
 };

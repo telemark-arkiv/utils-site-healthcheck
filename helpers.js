@@ -2,7 +2,6 @@ var request = require('request')
   , cheerio = require('cheerio')
   , xml2js = require('xml2js')
   , parser = new xml2js.Parser()
-  , pagespeedAPIKey = 'insert-your-google-APIkey-here'
   ;
 
 function daysBetween(date1, date2){
@@ -17,17 +16,10 @@ function checkLink(pageUrl, linkUrl, callback){
       return callback(error, ret);
     }
     if (!error && response.statusCode != 200) {
-      var ret = mkCsvRowFromArray([pageUrl, linkUrl, response.statusCode]);
+      var ret = [pageUrl, linkUrl, response.statusCode];
       return callback (null, ret);
     }
   });
-}
-
-function mkCsvRowFromArray(arr){
-  var a = arr.map(function(i){
-        return '"' + i + '"'
-      });
-  return a.join(',') + '\r\n'
 }
 
 module.exports = {
@@ -52,7 +44,7 @@ module.exports = {
       , pageModified = new Date(page.lastmod[0])
       , location = page.loc[0]
       , last_modified = daysBetween(today, pageModified)
-      , ret = mkCsvRowFromArray([location, last_modified]);
+      , ret = [location, last_modified];
 
     return callback(null, ret);
   },
@@ -76,7 +68,7 @@ module.exports = {
       }
     });
   },
-  checkPageLinks: function(pageUrl, stream, links){
+  checkPageLinks: function(pageUrl, tracker, links){
     var linksLength = links.length;
 
     for(var i=0;i < linksLength; i++){
@@ -84,40 +76,12 @@ module.exports = {
 
       checkLink(pageUrl, link, function(err, data){
         if(err){
-          stream.push(data);
+          tracker.emit('row', data);
         } else {
-          stream.push(data);
+          tracker.emit('row', data);
         }
       });
     }
-  },
-  checkPageStatus: function(pageUrl, callback){
-    request(pageUrl, function(error, response, body){
-      if (error) {
-        return callback(error, null);
-      } else {
-        var thisUrl = response.request.uri.href
-          , data = mkCsvRowFromArray([thisUrl, response.statusCode]);
-        return callback(null, data);
-      }
-    });
-  },
-  getPagespeedReport: function(pageUrl, callback){
-    var pagespeedUrl = 'https://www.googleapis.com/pagespeedonline/v1/runPagespeed?url='+ pageUrl + '&key=' + pagespeedAPIKey;
-
-    request(pagespeedUrl, function(error, response, body){
-      if(error){
-        return callback(error, null);
-      } else {
-        var result = JSON.parse(body.toString());
-        if(result.score){
-          var ret = mkCsvRowFromArray([pageUrl, result.score]);
-          return callback(null, ret);
-        } else {
-          return callback(new Error('Something is wrong: ' + result), null);
-        }
-      }
-    });
   },
   getPageMetadata: function(pageUrl, callback) {
     request(pageUrl, function(error, response, body){
@@ -130,7 +94,7 @@ module.exports = {
           , title = $('title').text()
           , keywords = $('meta[name=keywords]').attr('content')
           , description = $('meta[name=description]').attr('content')
-          , ret = mkCsvRowFromArray([pageUrl, title, keywords, description]);
+          , ret = [pageUrl, title, keywords, description];
 
         return callback(null, ret);
       } else {
