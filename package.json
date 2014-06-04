@@ -10,7 +10,7 @@
   },
   "main": "index.js",
   "scripts": {
-    "start" : "node cli ./",
+    "start": "node cli ./",
     "test": "mocha --reporter spec test/*.js"
   },
   "engines": {
@@ -30,5 +30,8 @@
     "cheerio": "^0.14.0",
     "html-validator": "0.0.4",
     "wcag-validator": "0.0.1"
+  },
+  "devDependencies": {
+    "mocha": "^1.20.1"
   }
 }
