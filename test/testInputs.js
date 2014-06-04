@@ -45,16 +45,15 @@ describe('Generator - inputs', function(){
 
   });
 
-  /*
-  it('Should throw if opts.format is not specified', function(done){
+  it('Should throw if opts.report is not specified', function(done){
 
     var opts = {url:'http://www.npmjs.org'};
 
-    validator(opts, function(err, data){
+    generator(opts, function(err, data){
       assert.throws(function(){
           if(err) throw err;
         }, function(err){
-          if((err instanceof Error) && /Missing required param: format/.test(err)){
+          if((err instanceof Error) && /Missing required param: report/.test(err)){
             return true
           }
         },
@@ -65,5 +64,4 @@ describe('Generator - inputs', function(){
 
   });
 
-  */
 });
