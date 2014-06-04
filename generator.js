@@ -37,3 +37,7 @@ if (sitemapUrl && report && fileName && validReport) {
   console.log('node index.js --url=url-to-parse --report=type-of-report --filename=filename-to-save');
   console.log('Valid report types: ' + validReports.join(', '));
 }
+
+module.exports = function generateReport(opts, callback){
+  return callback(null, {});
+};
