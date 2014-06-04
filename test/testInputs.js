@@ -30,7 +30,7 @@ describe('Generator - inputs', function(){
 
     var opts = {format:'json', url:'pysje'};
 
-    validator(opts, function(err, data){
+    generator(opts, function(err, data){
       assert.throws(function(){
           if(err) throw err;
         }, function(err){

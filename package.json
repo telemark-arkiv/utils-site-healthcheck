@@ -28,6 +28,7 @@
     "html-validator": "0.0.4",
     "minimist": "0.0.8",
     "request": "^2.34.0",
+    "valid-url": "^1.0.9",
     "wcag-validator": "0.0.2",
     "xml2js": "^0.4.2"
   },

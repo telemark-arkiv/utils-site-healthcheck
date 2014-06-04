@@ -1,5 +1,6 @@
 var fs = require('fs')
   , stream = require('stream')
+  , validUrl = require('valid-url')
   , helpers = require('./helpers')
   , reports = require('./reports')
   , argv = require('minimist')(process.argv.slice(2))
@@ -42,6 +43,10 @@ module.exports = function generateReport(opts, callback){
 
   if(!opts.url){
     return callback(new Error('Missing required param: url'), null);
+  }
+
+  if(opts.url && !validUrl.isWebUri(opts.url)){
+    return callback(new Error('Invalid url'), null);
   }
 
   return callback(null, {});
