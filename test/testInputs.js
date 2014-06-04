@@ -25,7 +25,7 @@ describe('Generator - inputs', function(){
 
   });
 
-  /*
+
   it('Should throw if opts.url contains invalid url', function(done){
 
     var opts = {format:'json', url:'pysje'};
@@ -45,6 +45,7 @@ describe('Generator - inputs', function(){
 
   });
 
+  /*
   it('Should throw if opts.format is not specified', function(done){
 
     var opts = {url:'http://www.npmjs.org'};
