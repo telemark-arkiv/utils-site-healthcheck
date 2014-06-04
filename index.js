@@ -1,21 +1,27 @@
 #!/usr/bin/env node
 'use strict';
 
-var pkg = require('./package.json')
+var generator = require('./generator')
+  , pkg = require('./package.json')
   , query = process.argv[2]
   , argv = require('minimist')((process.argv.slice(2)))
-  , opts = {}
+  , validReports = ['Fresh', 'Health', 'Links', 'Deadlinks', 'Html', 'Wcag', 'Pagespeed', 'Meta']
+  , opts = {
+      filename: 'report.csv'
+    }
   ;
 
 function printHelp() {
   console.log(pkg.description);
   console.log('');
   console.log('Usage:');
-  console.log('  $ gpagespeed <url> --key=<key>');
+  console.log('  $ node index.js <url> --report=<report>');
   console.log('');
-  console.log('Optional, supply other arguments.');
-  console.log('See https://developers.google.com/speed/docs/insights/v1/getting_started for description');
-  console.log('  $ gpagespeed <url> --key=<key> --callback=<callback> --prettyprint=<true> --userIp=<userIp> --locale=<locale> --strategy=<desktop|mobile>');
+  console.log('Valid report types: ' + validReports.join(', '));
+  console.log('');
+  console.log('Optional: pass in filename for report (defaults to report.csv)');
+  console.log('');
+  console.log('  $ node index.js <url> --report=<report> --filename=<filename>');
 }
 
 if (!query || process.argv.indexOf('-h') !== -1 || process.argv.indexOf('--help') !== -1) {
@@ -32,39 +38,20 @@ if (query.indexOf('http') !== -1) {
   opts.url = argv._[0];
 }
 
-if(!opts.url || (!argv.key && !argv.nokey)){
-  printHelp();
-  return;
-}
-
 if(argv.url){
   opts.url = argv.url;
 }
 
-if(argv.key){
-  opts.key = argv.key;
+if(argv.report){
+  opts.report = argv.report;
 }
 
-if(argv.callback){
-  opts.callback = argv.callback;
+if(argv.filename){
+  opts.filename = argv.filename;
 }
 
-if(argv.prettyprint){
-  opts.prettyprint = argv.prettyprint;
-}
-
-if(argv.userIp){
-  opts.userIp = argv.userIp;
-}
-
-if(argv.locale){
-  opts.locale = argv.locale;
-}
-
-if(argv.strategy){
-  opts.strategy = argv.strategy;
-}
-
-if(argv.nokey){
-  opts.nokey = argv.nokey;
+generator(opts, err){
+  if(err){
+    throw err;
+  }
 }
