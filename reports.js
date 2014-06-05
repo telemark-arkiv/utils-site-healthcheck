@@ -60,9 +60,14 @@ module.exports = {
       if(err){
         return callback(err, null);
       } else {
-        var res = result.messages.length > 0 ? "Errors" : "Valid"
-          , data = [result.url, res];
-        tracker.emit('row', data);
+        var errors = 0;
+        result.messages.forEach(function(msg){
+          if(msg.type === 'error'){
+            errors++;
+          }
+        });
+
+        tracker.emit('row', [result.url, errors]);
       }
     });
   },
