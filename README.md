@@ -1,5 +1,7 @@
 #Site Healthcheck
 
+[![Greenkeeper badge](https://badges.greenkeeper.io/telemark/utils-site-healthcheck.svg)](https://greenkeeper.io/)
+
 A small CLI-tool for maintaining a healthy website.
 
 The idea is to run different checks on your website and generate a report.
