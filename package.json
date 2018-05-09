@@ -28,7 +28,7 @@
     "gpagespeed": "0.0.6",
     "html-validator": "0.0.7",
     "minimist": "0.1.0",
-    "pagelt": "0.0.1",
+    "pagelt": "1.0.0",
     "request": "2.85.0",
     "valid-url": "1.0.9",
     "wcag-validator": "0.0.2",
