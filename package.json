@@ -27,7 +27,7 @@
     "cheerio": "0.16.0",
     "gpagespeed": "0.0.6",
     "html-validator": "0.0.7",
-    "minimist": "0.1.0",
+    "minimist": "0.2.0",
     "pagelt": "0.0.1",
     "request": "2.85.0",
     "valid-url": "1.0.9",
