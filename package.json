@@ -31,7 +31,7 @@
     "pagelt": "0.0.1",
     "request": "2.85.0",
     "valid-url": "1.0.9",
-    "wcag-validator": "0.0.2",
+    "wcag-validator": "0.0.3",
     "xml2js": "0.4.19"
   },
   "devDependencies": {
