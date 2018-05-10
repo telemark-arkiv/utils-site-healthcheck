@@ -25,7 +25,7 @@
   },
   "dependencies": {
     "cheerio": "0.22.0",
-    "gpagespeed": "0.0.6",
+    "gpagespeed": "4.0.5",
     "html-validator": "3.0.1",
     "minimist": "1.2.0",
     "pagelt": "1.0.0",
